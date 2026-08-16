@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { createClient, createAdminClient } from "@/lib/supabase/server";
 import AdminList from "./AdminList";
+import Skills from "@/components/sections/Skills";
 
 export default async function AdminPage() {
   const supabase = createClient();
