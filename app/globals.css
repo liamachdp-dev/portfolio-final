@@ -1,0 +1,238 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --term-bg: #0b0d0b;
+  --term-green: #4ade80;
+  --term-green-dim: #2f6b45;
+  --term-cyan: #38bdf8;
+  --term-amber: #fbbf24;
+  --term-text: #d7ffe0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* ============ BOOT OVERLAY ============ */
+#boot-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: var(--term-bg);
+  color: var(--term-green);
+  display: flex;
+  align-items: center;
+  padding: 8vh 8vw;
+  transition: opacity 0.6s ease, filter 0.6s ease;
+  font-family: "JetBrains Mono", monospace;
+}
+#boot-overlay.hide {
+  opacity: 0;
+  filter: blur(6px);
+  pointer-events: none;
+}
+#boot-lines {
+  font-size: clamp(14px, 2vw, 20px);
+  line-height: 1.9;
+  white-space: pre-wrap;
+}
+.boot-cursor {
+  display: inline-block;
+  width: 0.55em;
+  height: 1em;
+  background: var(--term-green);
+  margin-left: 2px;
+  vertical-align: middle;
+  animation: blink 1s steps(1) infinite;
+}
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+.boot-ok {
+  color: var(--term-green);
+}
+.boot-dim {
+  color: var(--term-green-dim);
+}
+.boot-count {
+  color: var(--term-amber);
+  font-weight: 700;
+}
+
+#flash {
+  position: fixed;
+  inset: 0;
+  z-index: 99;
+  background: #fff;
+  opacity: 0;
+  pointer-events: none;
+}
+#flash.pop {
+  animation: flashpop 0.35s ease-out;
+}
+@keyframes flashpop {
+  0% {
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.85;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* ============ NEOFETCH SECTION ============ */
+#neofetch {
+  min-height: 100vh;
+  background: radial-gradient(ellipse at 20% 10%, rgba(56, 189, 248, 0.06), transparent 60%),
+    var(--term-bg);
+  color: var(--term-text);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 6vh 6vw;
+  position: relative;
+  font-family: "JetBrains Mono", monospace;
+}
+
+.fetch-wrap {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 4vw;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 1100px;
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.fetch-wrap.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#ascii-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+#ascii {
+  color: var(--term-green);
+  font-size: clamp(3.5px, 0.48vw, 6.5px);
+  line-height: 1.05;
+  font-weight: 500;
+  text-shadow: 0 0 12px rgba(74, 222, 128, 0.25);
+}
+.ascii-line {
+  white-space: pre;
+  opacity: 0;
+  transform: translateX(-6px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+.ascii-line.show {
+  opacity: 1;
+  transform: translateX(0);
+}
+.ascii-tag {
+  margin-top: 10px;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--term-green-dim);
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+.ascii-tag.show {
+  opacity: 1;
+}
+
+#info {
+  font-size: clamp(11px, 1.15vw, 14px);
+  line-height: 1.7;
+  min-width: 0;
+  flex-shrink: 1;
+}
+#info .prompt {
+  color: var(--term-amber);
+  font-weight: 700;
+}
+#info .label {
+  color: var(--term-green);
+  font-weight: 700;
+}
+#info .val {
+  color: var(--term-text);
+}
+#info .rule {
+  color: var(--term-green-dim);
+}
+#info .row {
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+#info .row.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+#info .section-head {
+  color: var(--term-cyan);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-top: 14px;
+  margin-bottom: 2px;
+}
+#info .row:first-child .section-head {
+  margin-top: 0;
+}
+.swatches {
+  display: flex;
+  gap: 6px;
+  margin-top: 10px;
+}
+.swatches span {
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  border-radius: 2px;
+}
+
+#scroll-cue {
+  position: absolute;
+  bottom: 5vh;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--term-green-dim);
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  opacity: 0;
+  transition: opacity 1s ease 1.4s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  font-family: "JetBrains Mono", monospace;
+}
+#scroll-cue.show {
+  opacity: 1;
+}
+#scroll-cue .arrow {
+  animation: bob 1.6s ease-in-out infinite;
+}
+@keyframes bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(6px);
+  }
+}
