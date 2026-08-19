@@ -5,9 +5,9 @@ import { useState } from "react";
 interface Cert {
   title: string;
   issuer: string;
-  letter: string;
+  logo: string; // Path to logo in /public/logos/
   iconBg: string;
-  iconColor: string;
+  link: string; // Direct verification link
 }
 
 interface CertCategory {
@@ -15,24 +15,66 @@ interface CertCategory {
   items: Cert[];
 }
 
-// Placeholder data -- swap titles/issuers for your real certifications.
-// `letter` + colors stand in for a logo until you add real icon images.
 const categories: CertCategory[] = [
   {
     label: "",
     items: [
-      { title: "[Certification Name]", issuer: "PROVIDER", letter: "G", iconBg: "bg-blue-50", iconColor: "text-blue-500" },
-      { title: "[Certification Name]", issuer: "PROVIDER", letter: "G", iconBg: "bg-blue-50", iconColor: "text-blue-500" },
-      { title: "[Certification Name]", issuer: "PROVIDER", letter: "O", iconBg: "bg-orange-50", iconColor: "text-orange-500" },
-      { title: "[Certification Name]", issuer: "PROVIDER", letter: "N", iconBg: "bg-slate-50", iconColor: "text-slate-600" },
-      { title: "[Certification Name]", issuer: "PROVIDER", letter: "M", iconBg: "bg-green-50", iconColor: "text-green-600" },
-      { title: "[Certification Name]", issuer: "PROVIDER", letter: "S", iconBg: "bg-purple-50", iconColor: "text-purple-500" },
-      { title: "[Certification Name]", issuer: "PROVIDER", letter: "A", iconBg: "bg-red-50", iconColor: "text-red-500" },
-      { title: "[Certification Name]", issuer: "PROVIDER", letter: "C", iconBg: "bg-cyan-50", iconColor: "text-cyan-600" },
-      { title: "[Certification Name]", issuer: "PROVIDER", letter: "K", iconBg: "bg-blue-50", iconColor: "text-blue-500" },
-      { title: "[Certification Name]", issuer: "PROVIDER", letter: "P", iconBg: "bg-amber-50", iconColor: "text-amber-600" },
-      { title: "[Certification Name]", issuer: "PROVIDER", letter: "W", iconBg: "bg-orange-50", iconColor: "text-orange-500" },
-      { title: "[Certification Name]", issuer: "PROVIDER", letter: "H", iconBg: "bg-rose-50", iconColor: "text-rose-500" },
+      { 
+        title: "Certified in Cybersecurity (CC)", 
+        issuer: "ISC2", 
+        logo: "/logos/isc2-cc.png",
+        iconBg: "bg-blue-50",
+        link: "https://www.credly.com/badges/96312ce2-7b79-4470-a4f2-a6911f73b635/public_url"
+      },
+      { 
+        title: "IT Fundamentals (ITF+)", 
+        issuer: "CompTIA", 
+        logo: "/logos/comptia-logo.jpeg",
+        iconBg: "bg-red-50",
+        link: "" //tbd
+      },
+      { 
+        title: "Azure Fundamentals\n(AZ-900) [In-progress]", //az
+        issuer: "Microsoft", 
+        logo: "/logos/microsoft-logo.png",
+        iconBg: "bg-orange-50",
+        link: ""
+      },
+      { 
+        title: "Certified Cloud Practitioner\n [In-progress]", //aws
+        issuer: "Amazon Web Services", 
+        logo: "/logos/aws-logo.png",
+        iconBg: "bg-slate-50",
+        link: ""
+      },
+      { 
+        title: "Cloud Infrastructure 2025 Certified Foundations Associate", 
+        issuer: "Oracle", 
+        logo: "/logos/oracle_logo.jpeg",
+        iconBg: "bg-orange-50",
+        link: "" //gdrive of cert
+      },
+      { 
+        title: "CCNA: Introduction to Networks", //cisco 1
+        issuer: "Cisco", 
+        logo: "/logos/cisco1-logo.png",
+        iconBg: "bg-purple-50",
+        link: "https://www.credly.com/badges/3e533e16-29ae-497f-b08f-cb33b52b3664/public_url"
+      },
+      { 
+        title: "CCNA: Switching, Routing & Wireless Essentials", //cisco 2
+        issuer: "Cisco", 
+        logo: "/logos/cisco2-logo.png",
+        iconBg: "bg-purple-50",
+        link: ""
+      },
+      { 
+        title: "CCNA: Enterprise Networking, Security, and Automation", //cisco 3
+        issuer: "Cisco", 
+        logo: "/logos/cisco3-logo.png",
+        iconBg: "bg-purple-50",
+        link: "https://www.credly.com/badges/2ba36630-7147-4cf3-8ce7-8cada663f003/public_url"
+      },
     ],
   },
 ];
@@ -40,7 +82,7 @@ const categories: CertCategory[] = [
 const ROTATIONS = [-2, 1.5, -1, 2.5, -3, 2, -1.5, 3, -2.5, 1, -2, 2];
 const INITIAL_VISIBLE = 4;
 const LOAD_STEP = 4;
-const MAX_LOADS = 4; // "load 4 more" can be clicked at most this many times
+const MAX_LOADS = 4;
 
 function CertCard({ cert, index }: { cert: Cert; index: number }) {
   const rotation = ROTATIONS[index % ROTATIONS.length];
@@ -59,23 +101,31 @@ function CertCard({ cert, index }: { cert: Cert; index: number }) {
         e.currentTarget.style.boxShadow = "0 10px 20px -10px rgba(24,27,23,0.12)";
       }}
     >
-      <div className={`w-10 h-10 rounded-lg ${cert.iconBg} flex items-center justify-center mb-4`}>
-        <span className={`text-base font-bold ${cert.iconColor}`}>{cert.letter}</span>
+      {/* Updated Logo container: Removed p-2 and added overflow-hidden */}
+      <div className={`w-10 h-10 rounded-lg ${cert.iconBg} flex items-center justify-center mb-4 overflow-hidden`}>
+        <img 
+          src={cert.logo} 
+          alt={`${cert.issuer} logo`} 
+          className="w-full h-full object-cover"
+        />
       </div>
 
-      <h3 className="text-ink font-display font-semibold text-sm leading-snug mb-1">{cert.title}</h3>
+      <h3 className="text-ink font-display font-semibold text-sm leading-snug mb-1 whitespace-pre-line">
+  {cert.title}
+</h3>
       <span className="block font-mono text-[10px] tracking-widest text-inkSoft uppercase mb-6">
         {cert.issuer}
       </span>
 
-      <button
-        type="button"
-        className="font-mono text-[10px] tracking-widest text-inkSoft uppercase group-hover:text-accent transition-colors"
-        disabled
-        title="Verification link coming soon"
+      {/* Verification Direct Link */}
+      <a
+        href={cert.link}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="font-mono text-[10px] tracking-widest text-inkSoft uppercase group-hover:text-accent transition-colors inline-block cursor-pointer"
       >
         ‹ VERIFY ›
-      </button>
+      </a>
     </div>
   );
 }
@@ -88,9 +138,11 @@ function CategorySection({ category }: { category: CertCategory }) {
 
   return (
     <div className="mb-14">
-      <span className="block font-mono text-xs tracking-widest text-inkSoft uppercase mb-6">
-        {category.label}
-      </span>
+      {category.label && (
+        <span className="block font-mono text-xs tracking-widest text-inkSoft uppercase mb-6">
+          {category.label}
+        </span>
+      )}
       <div className="grid grid-cols-4 gap-1.5">
         {visible.map((cert, i) => (
           <CertCard key={i} cert={cert} index={i} />
@@ -99,7 +151,7 @@ function CategorySection({ category }: { category: CertCategory }) {
       {canLoadMore && (
         <button
           onClick={() => setLoadsUsed((n) => n + 1)}
-          className="mt-10 font-mono text-xs tracking-widest text-inkSoft uppercase border border-line rounded-full px-5 py-2.5 hover:border-accent hover:text-accent transition-colors"
+          className="mt-10 font-mono text-xs tracking-widest text-inkSoft uppercase border border-line rounded-full px-5 py-2.5 hover:border-accent hover:text-accent transition-colors cursor-pointer"
         >
           Load 4 more
         </button>
@@ -114,8 +166,8 @@ export default function Certifications() {
       <span className="block font-mono text-accent text-xs tracking-widest uppercase mb-3">02 — Certifications</span>
       <h2 className="font-display font-semibold text-[clamp(28px,3vw,40px)] text-ink mb-10">Certifications</h2>
 
-      {categories.map((category) => (
-        <CategorySection key={category.label} category={category} />
+      {categories.map((category, index) => (
+        <CategorySection key={index} category={category} />
       ))}
     </section>
   );

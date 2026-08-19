@@ -5,18 +5,18 @@ import { useState, useEffect } from "react";
 const PROJECTS_DATA = [
   {
     id: "1",
-    title: "Active Directory Home Lab",
-    date: "October 2023",
+    title: "UST AAI: A Web Based Content Management System",
+    date: "August 2024 - April 2025",
     description: "Built a fully functional Active Directory environment mimicking a corporate network. Configured Domain Controllers, Windows 10 endpoints, and vulnerable services. Executed basic attacks (LLMNR poisoning, Kerberoasting) and implemented defensive mitigations to secure the domain.",
-    link: "https://github.com/yourusername/ad-lab",
+    link: "ustaai.me",
     thumbnail: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=800&auto=format&fit=crop",
-    images: [
+    images: [ //gdrive
       "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=1200&auto=format&fit=crop",
       "https://images.unsplash.com/photo-1629654297299-c8506221ca97?q=80&w=1200&auto=format&fit=crop"
     ]
   },
   {
-    id: "2",
+    id: "2", //medium writeup 1
     title: "Custom Python Keylogger",
     date: "January 2024",
     description: "Developed a proof-of-concept keylogger in Python for educational purposes. It hooks into keyboard events, encrypts the logged strokes using AES, and securely exfiltrates the data over a local C2 server.",
@@ -27,7 +27,7 @@ const PROJECTS_DATA = [
     ]
   },
   {
-    id: "3",
+    id: "3", //medium writeup 2
     title: "Automated Vulnerability Scanner",
     date: "March 2024",
     description: "A bash-based automation script that chains together Nmap, Gobuster, and Nikto. It takes a target IP, runs a comprehensive reconnaissance pipeline, and outputs a formatted HTML report.",
