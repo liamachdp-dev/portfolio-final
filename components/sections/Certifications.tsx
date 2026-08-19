@@ -62,7 +62,7 @@ const categories: CertCategory[] = [
         link: "https://www.credly.com/badges/3e533e16-29ae-497f-b08f-cb33b52b3664/public_url"
       },
       { 
-        title: "CCNA: Switching, Routing & Wireless test", //cisco 2
+        title: "CCNA: Switching, Routing & Wireless Essentials", //cisco 2
         issuer: "Cisco", 
         logo: "/logos/cisco2-logo.png",
         iconBg: "bg-purple-50",
