@@ -36,8 +36,8 @@ export default function Sidebar() {
 
   return (
     <>
-      {/* Mobile Top Header Bar (Only visible on small screens) */}
-      <div className="md:hidden fixed top-0 left-0 right-0 h-14 bg-paper/90 backdrop-blur-md border-b border-line z-40 flex items-center justify-between px-4 font-mono">
+      {/* Mobile Top Header Bar with Expand/Collapse Toggle */}
+      <div className="md:hidden fixed top-0 left-0 right-0 h-14 bg-paper/95 backdrop-blur-md border-b border-line z-40 flex items-center justify-between px-4 font-mono">
         <div className="font-display font-semibold text-sm text-ink">
           [Your Name]
           <span className="text-[11px] text-inkSoft font-medium ml-1.5">/ Portfolio</span>
@@ -45,7 +45,7 @@ export default function Sidebar() {
         <button
           onClick={() => setIsOpen((prev) => !prev)}
           aria-label="Toggle navigation menu"
-          className="p-2 rounded-md border border-line bg-white text-inkSoft hover:text-accent focus:outline-none"
+          className="p-2 rounded-md border border-line bg-white text-inkSoft hover:text-accent focus:outline-none transition-colors cursor-pointer"
         >
           {isOpen ? (
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -59,65 +59,64 @@ export default function Sidebar() {
         </button>
       </div>
 
-      {/* Mobile Backdrop Overlay */}
+      {/* Mobile Backdrop (Click outside to collapse) */}
       {isOpen && (
         <div
-          className="md:hidden fixed inset-0 bg-black/40 z-40 backdrop-blur-xs"
+          className="md:hidden fixed inset-0 bg-black/40 z-40 backdrop-blur-xs transition-opacity"
           onClick={() => setIsOpen(false)}
         />
       )}
 
-      {/* Main Sidebar (Drawer on mobile, Sticky on desktop) */}
+      {/* Sidebar Container */}
       <aside
         className={`
-          font-mono flex flex-col gap-9 bg-paper border-r border-line
-          /* Mobile Drawer Styles */
-          fixed top-0 bottom-0 left-0 z-50 w-[240px] px-6 py-8 shadow-2xl transition-transform duration-300 ease-in-out
+          font-mono flex flex-col bg-paper border-r border-line
+          /* Mobile View: Slide-over Drawer */
+          fixed top-0 bottom-0 left-0 z-50 w-[260px] px-6 py-8 transition-transform duration-300 ease-in-out shadow-2xl
           ${isOpen ? "translate-x-0" : "-translate-x-full"}
-          /* Desktop Styles (Original Layout Preserved) */
-          md:sticky md:top-0 md:h-screen md:w-[220px] md:flex-shrink-0 md:translate-x-0 md:px-7 md:py-12 md:shadow-none md:z-auto
+          /* Desktop View: Sticky Sidebar that follows scrolling */
+          md:sticky md:top-0 md:h-screen md:w-[220px] md:flex-shrink-0 md:self-start md:translate-x-0 md:px-7 md:py-12 md:shadow-none md:z-auto
         `}
       >
-        {/* Header */}
-        <div className="flex items-center justify-between">
-          <div className="font-display font-semibold text-[15px] text-ink">
-            [Your Name]
-            <span className="block text-[11px] text-inkSoft font-medium mt-0.5">Portfolio</span>
+        {/* Top Header & Links */}
+        <div className="flex flex-col gap-9">
+          <div className="flex items-center justify-between">
+            <div className="font-display font-semibold text-[15px] text-ink">
+              [Your Name]
+              <span className="block text-[11px] text-inkSoft font-medium mt-0.5">Portfolio</span>
+            </div>
+            {/* Mobile Close Button */}
+            <button
+              onClick={() => setIsOpen(false)}
+              aria-label="Close menu"
+              className="md:hidden text-inkSoft hover:text-accent p-1"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
           </div>
-          {/* Close button inside mobile drawer */}
-          <button
-            onClick={() => setIsOpen(false)}
-            aria-label="Close menu"
-            className="md:hidden text-inkSoft hover:text-accent p-1"
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
+
+          <nav className="flex flex-col gap-1">
+            {links.map((l) => (
+              <a
+                key={l.href}
+                href={l.href}
+                onClick={() => setIsOpen(false)}
+                className={`flex items-center gap-2.5 text-sm px-2.5 py-2 rounded-md transition-colors ${
+                  active === l.href ? "bg-accentSoft text-accent font-medium" : "text-inkSoft hover:bg-accentSoft hover:text-accent"
+                }`}
+              >
+                <span className="text-[11px] tabular-nums w-3.5">{l.num}</span>
+                {l.label}
+              </a>
+            ))}
+          </nav>
         </div>
 
-        {/* Navigation Links */}
-        <nav className="flex flex-col gap-1">
-          {links.map((l) => (
-            <a
-              key={l.href}
-              href={l.href}
-              onClick={() => setIsOpen(false)}
-              className={`flex items-center gap-2.5 text-sm px-2.5 py-2 rounded-md transition-colors ${
-                active === l.href ? "bg-accentSoft text-accent" : "text-inkSoft hover:bg-accentSoft hover:text-accent"
-              }`}
-            >
-              <span className="text-[11px] tabular-nums w-3.5">{l.num}</span>
-              {l.label}
-            </a>
-          ))}
-        </nav>
-
         {/* Pinned Bottom Group */}
-        <div className="mt-auto flex flex-col gap-4">
-          {/* Centered Action Boxes */}
+        <div className="mt-auto pt-6 flex flex-col gap-4">
           <div className="flex items-center justify-center gap-3 w-full">
-            {/* LinkedIn */}
             <a
               href="https://linkedin.com/in/yourprofile"
               target="_blank"
@@ -131,7 +130,6 @@ export default function Sidebar() {
               </svg>
             </a>
 
-            {/* Email */}
             <a
               href="mailto:liamhadap.2@gmail.com"
               title="Email"
@@ -144,8 +142,7 @@ export default function Sidebar() {
             </a>
           </div>
 
-          {/* Minigames Box */}
-          <div className="border-2 border-dashed border-inkSoft/40 rounded-xl py-5 px-3 text-center text-[11px] font-medium text-inkSoft tracking-wide flex items-center justify-center">
+          <div className="border-2 border-dashed border-inkSoft/40 rounded-xl py-4 px-3 text-center text-[11px] font-medium text-inkSoft tracking-wide flex items-center justify-center">
             minigames coming soon
           </div>
         </div>

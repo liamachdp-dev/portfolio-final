@@ -61,13 +61,13 @@ export default function Neofetch({ start }: { start: boolean }) {
   }, [start]);
 
   return (
-    <section id="neofetch" className="w-full max-w-full overflow-x-hidden px-4 sm:px-8 py-6">
-      {/* flex-col stacks ASCII on top for mobile; md:flex-row preserves side-by-side desktop view */}
-      <div className={`fetch-wrap ${wrapShown ? "show" : ""} flex flex-col md:flex-row items-start gap-6 md:gap-10 w-full max-w-full overflow-hidden`}>
+    <section id="neofetch" className="w-full max-w-full overflow-x-hidden px-4 sm:px-8 py-6 flex flex-col items-center md:items-start">
+      {/* Container centered on mobile, side-by-side on desktop */}
+      <div className={`fetch-wrap ${wrapShown ? "show" : ""} flex flex-col md:flex-row items-center md:items-start gap-6 md:gap-10 w-full max-w-full overflow-hidden`}>
         
-        {/* ASCII Art Wrapper (Top on mobile) */}
-        <div id="ascii-wrap" className="w-full md:w-auto max-w-full overflow-x-auto select-none">
-          <div id="ascii" className="font-mono text-[10px] sm:text-xs md:text-sm">
+        {/* ASCII Art Wrapper */}
+        <div id="ascii-wrap" className="w-full md:w-auto max-w-full overflow-x-auto select-none flex flex-col items-center justify-center">
+          <div id="ascii" className="font-mono text-[10px] sm:text-xs md:text-sm text-center md:text-left">
             {asciiArt.map((line, i) => (
               <div key={i} className={`ascii-line ${i < visibleCount ? "show" : ""}`}>
                 {line}
@@ -79,35 +79,35 @@ export default function Neofetch({ start }: { start: boolean }) {
           </div>
         </div>
 
-        {/* Info Wrapper (Bottom on mobile) */}
-        <div id="info" className="w-full md:flex-1 min-w-0">
+        {/* Info Wrapper */}
+        <div id="info" className="w-full md:flex-1 min-w-0 text-center md:text-left flex flex-col items-center md:items-start">
           {infoRows.map((row, i) => {
             const shown = i < visibleCount ? "show" : "";
             
             if (row.type === "prompt") {
               return (
-                <div key={i} className={`row ${shown}`}>
+                <div key={i} className={`row ${shown} w-full text-center md:text-left`}>
                   <span className="prompt">{row.text}</span>
                 </div>
               );
             }
             if (row.type === "rule") {
               return (
-                <div key={i} className={`row ${shown}`}>
+                <div key={i} className={`row ${shown} w-full text-center md:text-left`}>
                   <span className="rule">{row.text}</span>
                 </div>
               );
             }
             if (row.type === "section") {
               return (
-                <div key={i} className={`row ${shown} mt-3`}>
+                <div key={i} className={`row ${shown} mt-3 w-full text-center md:text-left`}>
                   <span className="section-head">{row.text}</span>
                 </div>
               );
             }
             if (row.type === "socials") {
               return (
-                <div key={i} className={`row socials-row flex flex-wrap items-center gap-2.5 ${shown}`}>
+                <div key={i} className={`row socials-row flex flex-wrap items-center justify-center md:justify-start gap-2.5 ${shown} w-full`}>
                   {/* LinkedIn Button */}
                   <a 
                     href="https://www.linkedin.com/in/liam-hadap-81b66138b/" 
@@ -144,8 +144,9 @@ export default function Neofetch({ start }: { start: boolean }) {
                       />
                     </svg>
                   </a>
-                  
-                  <span className="font-mono text-[11px] text-inkSoft/70 italic tracking-wide ml-1">
+
+                  {/* Text hidden on mobile, visible on desktop */}
+                  <span className="hidden md:inline-block font-mono text-[11px] text-inkSoft/70 italic tracking-wide ml-1">
                     ➞ please fund my security+ huhuhu
                   </span>
                 </div>
@@ -153,7 +154,7 @@ export default function Neofetch({ start }: { start: boolean }) {
             }
             if (row.type === "swatches") {
               return (
-                <div key={i} className={`row swatches ${shown} mt-1`}>
+                <div key={i} className={`row swatches ${shown} mt-1 flex justify-center md:justify-start w-full`}>
                   <span style={{ background: "#4ade80" }} />
                   <span style={{ background: "#38bdf8" }} />
                   <span style={{ background: "#fbbf24" }} />
@@ -163,7 +164,7 @@ export default function Neofetch({ start }: { start: boolean }) {
             }
 
             return (
-              <div key={i} className={`row ${shown}`}>
+              <div key={i} className={`row ${shown} w-full text-center md:text-left`}>
                 {row.label ? (
                   <>
                     <span className="label">{row.label}</span>: <span className="val">{row.value}</span>
@@ -177,7 +178,8 @@ export default function Neofetch({ start }: { start: boolean }) {
         </div>
       </div>
 
-      <div id="scroll-cue" className={cueShown ? "show" : ""}>
+      {/* Force-hidden on mobile using !hidden, restored on desktop using md:!flex */}
+      <div id="scroll-cue" className={`${cueShown ? "show" : ""} !hidden md:!flex`}>
         <span>scroll to continue</span>
         <span className="arrow">↓</span>
       </div>
