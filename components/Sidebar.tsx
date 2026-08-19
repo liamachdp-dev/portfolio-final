@@ -39,7 +39,7 @@ export default function Sidebar() {
       {/* Mobile Top Header Bar with Expand/Collapse Toggle */}
       <div className="md:hidden fixed top-0 left-0 right-0 h-14 bg-paper/95 backdrop-blur-md border-b border-line z-40 flex items-center justify-between px-4 font-mono">
         <div className="font-display font-semibold text-sm text-ink">
-          [Your Name]
+          [liam-hdp]
           <span className="text-[11px] text-inkSoft font-medium ml-1.5">/ Portfolio</span>
         </div>
         <button
