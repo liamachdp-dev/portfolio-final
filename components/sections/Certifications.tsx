@@ -89,7 +89,7 @@ function CertCard({ cert, index }: { cert: Cert; index: number }) {
 
   return (
     <div
-      className="group relative bg-white rounded-xl border border-line px-5 py-6 transition-all duration-300 ease-out hover:z-10 hover:scale-110 hover:rotate-0 hover:border-accent hover:bg-accentSoft"
+      className="group relative bg-white rounded-xl border border-line px-5 py-6 transition-all duration-300 ease-out hover:z-10 hover:scale-105 sm:hover:scale-110 hover:rotate-0 hover:border-accent hover:bg-accentSoft"
       style={{
         transform: `rotate(${rotation}deg)`,
         boxShadow: "0 10px 20px -10px rgba(24,27,23,0.12)",
@@ -101,7 +101,6 @@ function CertCard({ cert, index }: { cert: Cert; index: number }) {
         e.currentTarget.style.boxShadow = "0 10px 20px -10px rgba(24,27,23,0.12)";
       }}
     >
-      {/* Updated Logo container: Removed p-2 and added overflow-hidden */}
       <div className={`w-10 h-10 rounded-lg ${cert.iconBg} flex items-center justify-center mb-4 overflow-hidden`}>
         <img 
           src={cert.logo} 
@@ -111,13 +110,12 @@ function CertCard({ cert, index }: { cert: Cert; index: number }) {
       </div>
 
       <h3 className="text-ink font-display font-semibold text-sm leading-snug mb-1 whitespace-pre-line">
-  {cert.title}
-</h3>
+        {cert.title}
+      </h3>
       <span className="block font-mono text-[10px] tracking-widest text-inkSoft uppercase mb-6">
         {cert.issuer}
       </span>
 
-      {/* Verification Direct Link */}
       <a
         href={cert.link}
         target="_blank"
@@ -143,7 +141,8 @@ function CategorySection({ category }: { category: CertCategory }) {
           {category.label}
         </span>
       )}
-      <div className="grid grid-cols-4 gap-1.5">
+      {/* 1 column on mobile, 2 on tablet, 4 on desktop */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-4 lg:gap-1.5">
         {visible.map((cert, i) => (
           <CertCard key={i} cert={cert} index={i} />
         ))}
@@ -162,9 +161,9 @@ function CategorySection({ category }: { category: CertCategory }) {
 
 export default function Certifications() {
   return (
-    <section id="certifications" className="min-h-[70vh] px-16 py-24 border-b border-line max-w-[1100px]">
+    <section id="certifications" className="min-h-[70vh] px-6 sm:px-12 md:px-16 py-12 md:py-24 border-b border-line w-full max-w-[1100px]">
       <span className="block font-mono text-accent text-xs tracking-widest uppercase mb-3">02 — Certifications</span>
-      <h2 className="font-display font-semibold text-[clamp(28px,3vw,40px)] text-ink mb-10">Certifications</h2>
+      <h2 className="font-display font-semibold text-3xl sm:text-4xl md:text-[clamp(28px,3vw,40px)] text-ink mb-10">Certifications</h2>
 
       {categories.map((category, index) => (
         <CategorySection key={index} category={category} />
