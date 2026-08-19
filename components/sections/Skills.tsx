@@ -36,8 +36,8 @@ export default function Skills() {
   const [active, setActive] = useState(0);
 
   return (
-    <section id="skills" className="min-h-[70vh] px-16 py-24 border-b border-line max-w-[1100px]">
-      <span className="block font-mono text-accent text-xs tracking-widest uppercase mb-3">03 — Skills</span>
+    <section id="skills" className="px-16 py-14 border-b border-line max-w-[1100px]">
+      <span className="block font-mono text-accent text-xs tracking-widest uppercase mb-3">04 — Skills</span>
       <h2 className="font-display font-semibold text-[clamp(28px,3vw,40px)] text-ink mb-10">What I work with</h2>
 
       <div className="flex flex-wrap gap-2 mb-10">

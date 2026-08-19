@@ -2,13 +2,10 @@ import PageShell from "@/components/PageShell";
 import Sidebar from "@/components/Sidebar";
 import About from "@/components/sections/About";
 import Certifications from "@/components/sections/Certifications";
+import Projects from "@/components/sections/Projects";
 import Skills from "@/components/sections/Skills";
-import Courses from "@/components/sections/Courses";
 import Recommendations from "@/components/sections/Recommendations";
 
-// Server Component: safe to render Recommendations here (it reads
-// Supabase via cookies on the server). PageShell handles the
-// client-only boot animation and wraps everything below it.
 export default function Home() {
   return (
     <PageShell>
@@ -16,8 +13,8 @@ export default function Home() {
       <div className="flex-1">
         <About />
         <Certifications />
+        <Projects />
         <Skills />
-        <Courses />
         <Recommendations />
       </div>
     </PageShell>

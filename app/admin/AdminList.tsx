@@ -5,6 +5,7 @@ import { useState } from "react";
 interface Item {
   id: string;
   name: string;
+  affiliation: string;
   avatar_url: string | null;
   message: string;
   created_at: string;
@@ -36,7 +37,10 @@ export default function AdminList({ items }: { items: Item[] }) {
       {list.map((item) => (
         <div key={item.id} className="border border-line rounded-lg px-5 py-4">
           <p className="text-ink text-sm leading-relaxed mb-2">&ldquo;{item.message}&rdquo;</p>
-          <span className="text-inkSoft text-xs font-mono block mb-3">— {item.name}</span>
+          <span className="text-inkSoft text-xs font-mono block mb-3">
+            — {item.name}
+            {item.affiliation ? `, ${item.affiliation}` : ""}
+          </span>
           <div className="flex gap-2">
             <button
               onClick={() => act(item.id, "approved")}

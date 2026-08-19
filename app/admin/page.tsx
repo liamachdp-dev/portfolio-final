@@ -23,7 +23,7 @@ export default async function AdminPage() {
   const admin = createAdminClient();
   const { data: pending } = await admin
     .from("recommendations")
-    .select("id, name, avatar_url, message, created_at")
+    .select("id, name, affiliation, avatar_url, message, created_at")
     .eq("status", "pending")
     .order("created_at", { ascending: true });
 
