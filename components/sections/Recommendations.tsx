@@ -3,7 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import type { Recommendation } from "@/lib/types";
 
 export default async function Recommendations() {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data } = await supabase
     .from("recommendations")
     .select("id, name, affiliation, message, created_at")

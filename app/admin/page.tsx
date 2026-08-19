@@ -4,7 +4,7 @@ import AdminList from "./AdminList";
 import Skills from "@/components/sections/Skills";
 
 export default async function AdminPage() {
-  const supabase = createClient();
+  const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();

@@ -5,7 +5,7 @@ import { sendAdminEmail } from "@/lib/email";
 import { signAction } from "@/lib/approvalToken";
 
 export async function GET() {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   const { data, error } = await supabase
     .from("recommendations")
@@ -21,7 +21,6 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  // Use the service role key to bypass RLS for the insert + select
   const supabaseAdmin = createAdminClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!

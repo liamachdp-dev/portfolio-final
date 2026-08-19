@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 
 export async function GET() {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   const { data, error } = await supabase
     .from("recommendations")
@@ -18,7 +18,7 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   const {
     data: { user },
@@ -30,9 +30,6 @@ export async function POST(request: Request) {
 
   const body = await request.json();
 
-  // Honeypot: a real visitor never sees or fills this field (it's
-  // visually hidden in the form). If it has a value, silently treat
-  // the submission as spam without letting the bot know it failed.
   if (typeof body?.company === "string" && body.company.trim() !== "") {
     return NextResponse.json({ ok: true });
   }
