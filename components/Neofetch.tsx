@@ -7,25 +7,30 @@ function wait(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-// Edit these freely -- this is the content that appears on the right.
-const infoRows: { type: "prompt" | "rule" | "field" | "section" | "swatches" | "socials"; label?: string; value?: string; text?: string }[] = [
-  { type: "prompt", text: "guest@yourname-portfolio" },
+const infoRows: { 
+  type: "prompt" | "rule" | "field" | "section" | "swatches" | "socials"; 
+  label?: string; 
+  value?: string; 
+  text?: string 
+}[] = [
+  { type: "prompt", text: "liam-hdp@portfolio" },
   { type: "rule", text: "-----------------------" },
-  { type: "field", label: "Role", value: "NetSec & Cybersecurity Student" },
-  { type: "field", label: "Location", value: "[City, Country]" },
-  { type: "field", label: "Uptime", value: "[X] years in the field" },
-  { type: "field", label: "Shell", value: "bash --curiosity" },
-  { type: "section", text: "-- arsenal --" },
-  { type: "field", label: "Tools", value: "Kali Linux, Wireshark, Burp Suite, Nmap, Metasploit" },
-  { type: "section", text: "-- certs --" },
-  { type: "field", label: "Certs", value: "CompTIA Security+ [status], CEH [status]" },
-  { type: "section", text: "-- ctf --" },
-  { type: "field", label: "CTF", value: "TryHackMe [rank/%], HackTheBox [rank]" },
-  { type: "section", text: "-- projects --" },
-  { type: "field", label: "Projects", value: "[X] active — see /projects below" },
-  { type: "section", text: "-- writing --" },
-  { type: "field", label: "Blog", value: 'latest: "[post title]"' },
-  { type: "section", text: "-- socials --" },
+  { type: "field", label: "Degree", value: "BS Information Technology (Network & Security)" },
+  { type: "field", label: "School", value: "University of Santo Tomas" },
+  
+  { type: "section", text: "-- INTERESTS --" },
+  { type: "field", value: "Vulnerability Assessment, Penetration Testing, Threat Defense, System Hardening, Cloud Security" },
+  
+  { type: "section", text: "-- TRY HACK ME --" },
+  { type: "field", value: "Top 1%" },
+  
+  { type: "section", text: "-- CERTIFICATIONS --" },
+  { type: "field", value: "ISC2, CompTia, [Pending] Azure, AWS" },
+
+  { type: "section", text: "-- QUOTE --" },
+  { type: "field", value: '"He who jumps into the void owes no explanation to those who stand by and watch"' },
+
+  { type: "section", text: "-- SOCIALS --" },
   { type: "socials" },
   { type: "swatches" },
 ];
@@ -46,7 +51,7 @@ export default function Neofetch({ start }: { start: boolean }) {
       const steps = Math.max(asciiArt.length, infoRows.length);
       for (let i = 0; i < steps; i++) {
         setVisibleCount((c) => c + 1);
-        await wait(30); // slower, clearly readable line-by-line reveal
+        await wait(30);
       }
       setTagShown(true);
       await wait(300);
@@ -67,13 +72,14 @@ export default function Neofetch({ start }: { start: boolean }) {
             ))}
           </div>
           <div className={`ascii-tag ${tagShown ? "show" : ""}`}>
-            ↳ placeholder — swap lib/asciiArt.ts with your real portrait
+            {/* ↳ placeholder — swap lib/asciiArt.ts with your real portrait */}
           </div>
         </div>
 
         <div id="info">
           {infoRows.map((row, i) => {
             const shown = i < visibleCount ? "show" : "";
+            
             if (row.type === "prompt") {
               return (
                 <div key={i} className={`row ${shown}`}>
@@ -90,50 +96,60 @@ export default function Neofetch({ start }: { start: boolean }) {
             }
             if (row.type === "section") {
               return (
-                <div key={i} className={`row ${shown}`}>
+                <div key={i} className={`row ${shown} mt-3`}>
                   <span className="section-head">{row.text}</span>
                 </div>
               );
             }
             if (row.type === "socials") {
   return (
-    <div key={i} className={`row socials-row ${shown}`}>
-      <button type="button" className="social-box" aria-label="LinkedIn" title="LinkedIn">
+    <div key={i} className={`row socials-row flex items-center gap-2.5 ${shown}`}>
+      {/* UPDATE THIS: Changed <button> to <a> and added href */}
+      <a 
+        href="https://www.linkedin.com/in/liam-hadap-81b66138b/" 
+        target="_blank" 
+        rel="noopener noreferrer" 
+        className="social-box flex items-center justify-center" 
+        aria-label="LinkedIn" 
+        title="LinkedIn"
+      >
         <svg viewBox="0 0 24 24" width="16" height="16" fill="none">
           <path
             d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM9 9h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.6c0-1.34-.02-3.06-1.87-3.06-1.87 0-2.16 1.46-2.16 2.96V21H9z"
             fill="currentColor"
           />
         </svg>
-      </button>
-      <button type="button" className="social-box" aria-label="Email" title="Email">
-        <svg viewBox="0 0 24 24" width="16" height="16" fill="none">
-          <path
-            d="M3 5h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zm1.4 2 7.1 6.2a1 1 0 0 0 1.3 0L20 7"
-            stroke="currentColor"
-            strokeWidth="1.6"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-      </button>
-      <button type="button" className="social-box" aria-label="Download resume" title="Download resume">
-        <svg viewBox="0 0 24 24" width="16" height="16" fill="none">
-          <path
-            d="M12 3v11m0 0-4-4m4 4 4-4M5 19h14"
-            stroke="currentColor"
-            strokeWidth="1.6"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-      </button>
+      </a>
+
+      {/* Email Button */}
+<a 
+  href="https://mail.google.com/mail/?view=cm&fs=1&to=liamhdp.alt@gmail.com" 
+  target="_blank"
+  rel="noopener noreferrer"
+  className="social-box flex items-center justify-center" 
+  aria-label="Email" 
+  title="Email"
+>
+  <svg viewBox="0 0 24 24" width="16" height="16" fill="none">
+    <path
+      d="M3 5h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zm1.4 2 7.1 6.2a1 1 0 0 0 1.3 0L20 7"
+      stroke="currentColor"
+      strokeWidth="1.6"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+</a>
+      
+      <span className="font-mono text-[11px] text-inkSoft/70 italic tracking-wide ml-1">
+        ➞ please fund my security+ huhuhu
+      </span>
     </div>
   );
 }
             if (row.type === "swatches") {
               return (
-                <div key={i} className={`row swatches ${shown}`}>
+                <div key={i} className={`row swatches ${shown} mt-1`}>
                   <span style={{ background: "#4ade80" }} />
                   <span style={{ background: "#38bdf8" }} />
                   <span style={{ background: "#fbbf24" }} />
@@ -141,9 +157,16 @@ export default function Neofetch({ start }: { start: boolean }) {
                 </div>
               );
             }
+
             return (
               <div key={i} className={`row ${shown}`}>
-                <span className="label">{row.label}</span>: <span className="val">{row.value}</span>
+                {row.label ? (
+                  <>
+                    <span className="label">{row.label}</span>: <span className="val">{row.value}</span>
+                  </>
+                ) : (
+                  <span className="val">{row.value}</span>
+                )}
               </div>
             );
           })}

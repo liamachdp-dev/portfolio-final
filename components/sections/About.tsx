@@ -7,13 +7,15 @@ export default function About() {
 
       <div className="flex flex-col md:flex-row gap-14 items-start">
         <div className="flex-1 min-w-0">
-          <h2 className="font-display font-semibold text-[clamp(28px,3vw,40px)] text-ink mb-4.5">
-            Hi, I&apos;m [Your Name].
+          {/* Increased heading size using text-5xl md:text-6xl */}
+          <h2 className="font-display font-semibold text-5xl md:text-6xl text-ink mb-6">
+            Hi, I&apos;m Liam.
           </h2>
-          <p className="text-inkSoft text-base leading-relaxed max-w-[56ch]">
-            Write your real intro here — who you are, what you study, and what kind of work
-            you&apos;re looking for. Keep it short; the boot sequence already did the flexing.
-          </p>
+
+          <div className="text-inkSoft text-lg leading-relaxed max-w-[56ch] space-y-4">
+            <p> Currently pursuing my BS in Information Technology with a specialization in Network and Security, I am a research- and output-driven individual who thrives on identifying system flaws and engineering practical, working fixes. Throughout my academic journey, I’ve developed a strong passion for cybersecurity—particularly in threat defense and system hardening. </p>
+            <p> As I near the completion of my degree, I aspire to step into a role as a Blue Team or Cloud Security to help defend digital infrastructure. </p>
+          </div>
         </div>
 
         <div className="w-full md:w-[440px] flex-shrink-0">

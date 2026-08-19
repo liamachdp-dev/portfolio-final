@@ -8,10 +8,9 @@ export interface GalleryPhoto {
 }
 
 const defaultPhotos: GalleryPhoto[] = [
-  { alt: "Photo 1" },
-  { alt: "Photo 2" },
-  { alt: "Photo 3" },
-  { alt: "Photo 4" },
+  { src: "/pictures/abt-me2.png", alt: "About me 2" },
+  { src: "/pictures/abt-me1.png", alt: "About me 1" },
+  { src: "/pictures/abt-me3.png", alt: "About me 3" },
 ];
 
 export default function PhotoCarousel({ photos = defaultPhotos }: { photos?: GalleryPhoto[] }) {

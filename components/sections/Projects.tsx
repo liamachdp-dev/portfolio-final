@@ -7,69 +7,27 @@ const PROJECTS_DATA = [
     id: "1",
     title: "UST AAI: A Web Based Content Management System",
     date: "August 2024 - April 2025",
-    description: "Built a fully functional Active Directory environment mimicking a corporate network. Configured Domain Controllers, Windows 10 endpoints, and vulnerable services. Executed basic attacks (LLMNR poisoning, Kerberoasting) and implemented defensive mitigations to secure the domain.",
+    description: "Developed by Third-year Information Technology students at the University of Santo Tomas for the University of Santo Tomas Alumni Association Inc. The project, entitled, UST AAI Web-Based Content Management System is designed to streamline digital administration and alumni engagement for the organization. The platform provides an intuitive, non-technical interface that allows association officers across varying digital skill levels to effortlessly manage and update website content, and maintain a direct communication bridge with the UST alumni community.",
     link: "ustaai.me",
-    thumbnail: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=800&auto=format&fit=crop",
+    thumbnail: "/pictures/aai-project2.png",
     images: [ //gdrive
-      "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=1200&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1629654297299-c8506221ca97?q=80&w=1200&auto=format&fit=crop"
+      "/pictures/aai-project1.png",
+      "/pictures/aai-project2.png",
+      "/pictures/aai-project3.png",
+      "/pictures/aai-project4.png"
     ]
   },
-  {
-    id: "2", //medium writeup 1
-    title: "Custom Python Keylogger",
-    date: "January 2024",
-    description: "Developed a proof-of-concept keylogger in Python for educational purposes. It hooks into keyboard events, encrypts the logged strokes using AES, and securely exfiltrates the data over a local C2 server.",
-    link: "https://github.com/yourusername/python-keylogger",
-    thumbnail: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=800&auto=format&fit=crop",
-    images: [
-      "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=1200&auto=format&fit=crop"
-    ]
-  },
-  {
-    id: "3", //medium writeup 2
-    title: "Automated Vulnerability Scanner",
-    date: "March 2024",
-    description: "A bash-based automation script that chains together Nmap, Gobuster, and Nikto. It takes a target IP, runs a comprehensive reconnaissance pipeline, and outputs a formatted HTML report.",
-    link: "https://github.com/yourusername/auto-scanner",
-    thumbnail: "https://images.unsplash.com/photo-1563206767-5b18f218e8de?q=80&w=800&auto=format&fit=crop",
-    images: [
-      "https://images.unsplash.com/photo-1563206767-5b18f218e8de?q=80&w=1200&auto=format&fit=crop"
-    ]
-  },
-  {
-    id: "4",
-    title: "Network Intrusion Detection System",
-    date: "May 2024",
-    description: "Configured Snort NIDS with custom rule sets to detect port scans, brute-force attempts, and malware signatures. Integrated with ELK Stack for log management.",
-    link: "https://github.com/yourusername/nids-elk",
-    thumbnail: "https://images.unsplash.com/photo-1551808525-51a94da548ce?q=80&w=800&auto=format&fit=crop",
-    images: [
-      "https://images.unsplash.com/photo-1551808525-51a94da548ce?q=80&w=1200&auto=format&fit=crop"
-    ]
-  },
-  {
-    id: "5",
-    title: "SOC Automation Playbooks",
-    date: "July 2024",
-    description: "Automated alert triage and incident response playbooks in Shuffle SOAR connected to TheHive and Cortex for threat intelligence enrichment.",
-    link: "https://github.com/yourusername/soc-automation",
-    thumbnail: "https://images.unsplash.com/photo-1510511459019-5dee997dd1db?q=80&w=800&auto=format&fit=crop",
-    images: [
-      "https://images.unsplash.com/photo-1510511459019-5dee997dd1db?q=80&w=1200&auto=format&fit=crop"
-    ]
-  },
-  {
-    id: "6",
-    title: "Cloud Infrastructure Hardening",
-    date: "September 2024",
-    description: "Terraform scripts and AWS Security Hub configurations enforcing CIS Benchmarks across multi-account AWS environments.",
-    link: "https://github.com/yourusername/aws-hardening",
-    thumbnail: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=800&auto=format&fit=crop",
-    images: [
-      "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1200&auto=format&fit=crop"
-    ]
-  }
+  // {
+  //   id: "2", //medium writeup 1
+  //   title: "Custom Python Keylogger",
+  //   date: "January 2024",
+  //   description: "Developed a proof-of-concept keylogger in Python for educational purposes. It hooks into keyboard events, encrypts the logged strokes using AES, and securely exfiltrates the data over a local C2 server.",
+  //   link: "https://github.com/yourusername/python-keylogger",
+  //   thumbnail: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=800&auto=format&fit=crop",
+  //   images: [
+  //     "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=1200&auto=format&fit=crop"
+  //   ]
+  // },
 ];
 
 type Project = typeof PROJECTS_DATA[0];
@@ -117,12 +75,32 @@ export default function Projects() {
                 alt={project.title} 
                 className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-ink/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-[2px]">
-                <span className="font-mono text-xs uppercase tracking-widest bg-accent text-white px-5 py-2.5 rounded-lg transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
+              
+              {/* Hover Buttons Overlay */}
+              <div className="absolute inset-0 bg-ink/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center gap-2.5 backdrop-blur-[2px]">
+                <button 
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSelectedProject(project);
+                  }}
+                  className="w-36 text-center font-mono text-xs uppercase tracking-widest bg-accent text-white py-2.5 rounded-lg transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 hover:opacity-90 cursor-pointer"
+                >
                   Read More
-                </span>
+                </button>
+                
+                <a 
+                  href={project.link.startsWith("http") ? project.link : `https://${project.link}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
+                  className="w-36 text-center font-mono text-xs uppercase tracking-widest bg-white/10 text-white border border-white/30 py-2.5 rounded-lg transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 delay-75 hover:bg-white hover:text-ink cursor-pointer"
+                >
+                  Visit Project
+                </a>
               </div>
             </div>
+            
             <h4 className="font-display font-medium text-lg text-ink group-hover:text-accent transition-colors">
               {project.title}
             </h4>
@@ -135,7 +113,7 @@ export default function Projects() {
         <div className="flex justify-center mt-12">
           <button
             onClick={handleShowMore}
-            className="font-mono text-xs tracking-widest uppercase px-8 py-3.5 rounded-lg border border-line text-ink bg-white hover:border-ink hover:shadow-sm transition-all duration-200"
+            className="font-mono text-xs tracking-widest uppercase px-8 py-3.5 rounded-lg border border-line text-ink bg-white hover:border-ink hover:shadow-sm transition-all duration-200 cursor-pointer"
           >
             Show More
           </button>
@@ -154,7 +132,7 @@ export default function Projects() {
           >
             <button 
               onClick={() => setSelectedProject(null)}
-              className="absolute top-4 right-4 z-10 w-10 h-10 bg-white/80 backdrop-blur border border-line rounded-full flex items-center justify-center text-inkSoft hover:text-ink hover:bg-white transition-all shadow-sm"
+              className="absolute top-4 right-4 z-10 w-10 h-10 bg-white/80 backdrop-blur border border-line rounded-full flex items-center justify-center text-inkSoft hover:text-ink hover:bg-white transition-all shadow-sm cursor-pointer"
               aria-label="Close modal"
             >
               ×
@@ -165,26 +143,29 @@ export default function Projects() {
               <p className="font-mono text-xs tracking-widest text-inkSoft mb-4 uppercase">
                 {selectedProject.date}
               </p>
-              <h3 className="font-display text-3xl md:text-4xl font-semibold text-ink mb-6">
-                {selectedProject.title}
-              </h3>
-              <p className="text-base text-inkSoft leading-relaxed mb-12">
-                {selectedProject.description}
-              </p>
               
-              <div className="mt-auto pt-8">
+              {/* Title with Top-Right Diagonal Redirect Arrow Link */}
+              <div className="flex items-start justify-between gap-3 mb-6">
+                <h3 className="font-display text-3xl md:text-4xl font-semibold text-ink">
+                  {selectedProject.title}
+                </h3>
                 <a 
-                  href={selectedProject.link}
+                  href={selectedProject.link.startsWith("http") ? selectedProject.link : `https://${selectedProject.link}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center w-full bg-accent text-white font-medium px-6 py-4 rounded-xl hover:opacity-90 transition-opacity"
+                  className="text-accent hover:text-ink transition-colors p-1 shrink-0"
+                  aria-label="Visit project site"
+                  title="Visit site"
                 >
-                  Visit Project
-                  <svg className="ml-2 w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                   </svg>
                 </a>
               </div>
+
+              <p className="text-base text-inkSoft leading-relaxed">
+                {selectedProject.description}
+              </p>
             </div>
 
             {/* Right 60% Images */}

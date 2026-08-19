@@ -88,7 +88,7 @@ export default function Sidebar() {
           </a>
 
           {/* Resume Download */}
-          <a
+          {/* <a
             href="/resume.pdf"
             download
             title="Download resume"
@@ -98,7 +98,7 @@ export default function Sidebar() {
             <svg viewBox="0 0 24 24" className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
               <path d="M12 3v11m0 0-4-4m4 4 4-4M5 19h14" />
             </svg>
-          </a>
+          </a> */}
         </div>
 
         {/* Minigames Box */}
