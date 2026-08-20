@@ -48,7 +48,6 @@ export default function MobileNoticeModal() {
             Desktop View Recommended
           </h3>
           <p className="text-inkSoft text-xs leading-relaxed">
-            For the optimal terminal animation, neofetch layout, and full portfolio experience, viewing on a desktop display is recommended.
           </p>
         </div>
 
