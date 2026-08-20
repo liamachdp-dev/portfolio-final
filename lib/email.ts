@@ -1,30 +1,40 @@
-export async function sendAdminEmail({ subject, html }: { subject: string; html: string }) {
-  if (!process.env.RESEND_API_KEY) {
-    console.warn("RESEND_API_KEY not set -- skipping admin notification email.");
-    return;
-  }
+export async function sendAdminEmail({
+  subject,
+  html,
+}: {
+  subject: string;
+  html: string;
+}) {
+  const apiKey = process.env.RESEND_API_KEY;
 
-  const toEmail = process.env.ADMIN_EMAIL || "liamhdp.alt@gmail.com";
-  // Must use onboarding@resend.dev unless you own and verified a custom domain in Resend
-  const fromEmail = process.env.RESEND_FROM_EMAIL || "Portfolio <onboarding@resend.dev>";
+  if (!apiKey) {
+    throw new Error(
+      "RESEND_API_KEY is missing from environment variables."
+    );
+  }
 
   const response = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
+      Authorization: `Bearer ${apiKey}`,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      from: fromEmail,
-      to: [toEmail],
+      from: "onboarding@resend.dev",
+      to: ["liamhdp.alt@gmail.com"],
       subject,
       html,
     }),
   });
 
+  const data = await response.json().catch(() => ({}));
+
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    console.error("Resend API Failed:", errorData);
-    throw new Error(`Resend API Error: ${errorData.message || response.statusText}`);
+    console.error("Resend API Delivery Failed:", data);
+    throw new Error(
+      data.message || `Resend request failed with status ${response.status}`
+    );
   }
+
+  return data;
 }

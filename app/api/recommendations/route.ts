@@ -79,7 +79,12 @@ export async function POST(request: Request) {
       `,
     });
   } catch (e) {
-    console.error("Failed to send admin notification email:", e);
+    const err = e as Error;
+    console.error("Failed to send admin notification email:", err);
+    return NextResponse.json(
+      { error: `Email error: ${err.message || "Failed to dispatch email."}` },
+      { status: 500 }
+    );
   }
 
   return NextResponse.json({ ok: true });
