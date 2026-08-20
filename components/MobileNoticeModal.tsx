@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 
 export default function MobileNoticeModal() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isDismissing, setIsDismissing] = useState(false);
 
   useEffect(() => {
     // Show only if not previously dismissed in the current session
@@ -14,15 +15,28 @@ export default function MobileNoticeModal() {
   }, []);
 
   const handleDismiss = () => {
+    setIsDismissing(true);
     sessionStorage.setItem("dismiss_mobile_notice", "true");
-    setIsOpen(false);
+    
+    // Wait for the fade-out animation (300ms) to finish before unmounting
+    setTimeout(() => {
+      setIsOpen(false);
+    }, 300);
   };
 
   if (!isOpen) return null;
 
   return (
-    <div className="md:hidden fixed inset-0 z-[100] bg-ink/80 backdrop-blur-md flex items-center justify-center p-6 animate-in fade-in duration-300 font-mono">
-      <div className="bg-paper border border-line rounded-2xl p-6 w-full max-w-sm text-center shadow-2xl flex flex-col items-center gap-4">
+    <div 
+      className={`md:hidden fixed inset-0 z-[100] bg-ink/80 backdrop-blur-md flex items-center justify-center p-6 font-mono transition-opacity duration-300 ease-in-out ${
+        isDismissing ? "opacity-0 pointer-events-none" : "opacity-100"
+      }`}
+    >
+      <div 
+        className={`bg-paper border border-line rounded-2xl p-6 w-full max-w-sm text-center shadow-2xl flex flex-col items-center gap-4 transition-all duration-300 ease-in-out ${
+          isDismissing ? "scale-95 opacity-0" : "scale-100 opacity-100"
+        }`}
+      >
         {/* Icon */}
         <div className="w-10 h-10 rounded-full bg-accentSoft border border-accent/20 flex items-center justify-center text-accent text-lg font-bold">
           !

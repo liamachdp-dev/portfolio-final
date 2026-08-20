@@ -82,7 +82,7 @@ export default function Sidebar() {
         <div className="flex flex-col gap-9">
           <div className="flex items-center justify-between">
             <div className="font-display font-semibold text-[15px] text-ink">
-              [Your Name]
+              [liam-hdp]
               <span className="block text-[11px] text-inkSoft font-medium mt-0.5">Portfolio</span>
             </div>
             {/* Mobile Close Button */}
