@@ -36,28 +36,22 @@ export default function Sidebar() {
 
   return (
     <>
-      {/* Mobile Top Header Bar with Expand/Collapse Toggle */}
-      <div className="md:hidden fixed top-0 left-0 right-0 h-14 bg-paper/95 backdrop-blur-md border-b border-line z-40 flex items-center justify-between px-4 font-mono">
-        <div className="font-display font-semibold text-sm text-ink">
-          [liam-hdp]
-          <span className="text-[11px] text-inkSoft font-medium ml-1.5">/ Portfolio</span>
-        </div>
-        <button
-          onClick={() => setIsOpen((prev) => !prev)}
-          aria-label="Toggle navigation menu"
-          className="p-2 rounded-md border border-line bg-white text-inkSoft hover:text-accent focus:outline-none transition-colors cursor-pointer"
-        >
-          {isOpen ? (
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          ) : (
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-          )}
-        </button>
-      </div>
+      {/* Floating Mobile Toggle Button (Top Left) */}
+      <button
+        onClick={() => setIsOpen((prev) => !prev)}
+        aria-label="Toggle navigation menu"
+        className="md:hidden fixed top-4 left-4 z-40 p-2.5 rounded-lg border border-line bg-paper/90 backdrop-blur-md text-inkSoft hover:text-accent focus:outline-none shadow-sm transition-all cursor-pointer"
+      >
+        {isOpen ? (
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        ) : (
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        )}
+      </button>
 
       {/* Mobile Backdrop (Click outside to collapse) */}
       {isOpen && (
@@ -74,7 +68,7 @@ export default function Sidebar() {
           /* Mobile View: Slide-over Drawer */
           fixed top-0 bottom-0 left-0 z-50 w-[260px] px-6 py-8 transition-transform duration-300 ease-in-out shadow-2xl
           ${isOpen ? "translate-x-0" : "-translate-x-full"}
-          /* Desktop View: Sticky Sidebar that follows scrolling */
+          /* Desktop View: Sticky Sidebar */
           md:sticky md:top-0 md:h-screen md:w-[220px] md:flex-shrink-0 md:self-start md:translate-x-0 md:px-7 md:py-12 md:shadow-none md:z-auto
         `}
       >
@@ -85,7 +79,7 @@ export default function Sidebar() {
               [liam-hdp]
               <span className="block text-[11px] text-inkSoft font-medium mt-0.5">Portfolio</span>
             </div>
-            {/* Mobile Close Button */}
+            {/* Mobile Close Button inside Drawer */}
             <button
               onClick={() => setIsOpen(false)}
               aria-label="Close menu"

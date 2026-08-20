@@ -21,7 +21,7 @@ export default function PageShell({ children }: { children: React.ReactNode }) {
       <Neofetch start={bootDone} />
       <div 
         id="modern" 
-        className="bg-paper text-ink font-sans flex flex-col md:flex-row min-h-screen pt-14 md:pt-0 overflow-x-clip"
+        className="bg-paper text-ink font-sans flex flex-col md:flex-row min-h-screen pt-0 overflow-x-clip"
       >
         {children}
       </div>
