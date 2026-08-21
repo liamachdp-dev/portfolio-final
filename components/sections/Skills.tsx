@@ -13,7 +13,7 @@ interface Category {
 const categories: Category[] = [
   {
     label: "Languages",
-    frontend: ["", "CSS", "JavaScript", "TypeScript", "React", "Tailwind CSS"],
+    frontend: ["HTML", "CSS", "JavaScript", "TypeScript", "React", "Tailwind CSS"],
     backend: ["Python", "PHP", "SQL", "Java"],
   },
   {
