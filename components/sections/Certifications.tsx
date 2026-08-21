@@ -1,197 +1,173 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
-const BLOGS_DATA = [
+interface Cert {
+  title: string;
+  issuer: string;
+  logo: string; // Path to logo in /public/logos/
+  iconBg: string;
+  link: string; // Direct verification link
+}
+
+interface CertCategory {
+  label: string;
+  items: Cert[];
+}
+
+const categories: CertCategory[] = [
   {
-    id: "1",
-    title: "TryHackMe: Exploiting Misconfigured Active Directory Kerberos",
-    date: "August 14, 2026",
-    author: "Liam Hadap",
-    snippet: "A deep dive walk-through covering Kerberoasting, AS-REP Roasting, and practical escalation strategies in an active directory environment.",
-    description: "In this writeup, we analyze active directory vulnerabilities within Kerberos authentication. We walk through initial enumeration using BloodHound, executing AS-REP Roasting against accounts without pre-authentication, and leveraging Kerberoasting to extract service account ticket hashes for offline cracking.",
-    link: "https://medium.com/@yourprofile/kerberos-exploitation",
-  },
-  {
-    id: "2",
-    title: "Understanding AWS S3 Bucket Privilege Escalation & Misconfigurations",
-    date: "July 28, 2026",
-    author: "Liam Hadap",
-    snippet: "Analyzing common cloud access vector issues, public bucket leaks, and enforcing least privilege policies across IAM roles.",
-    description: "Cloud misconfigurations remain one of the top security risks for modern enterprises. This writeup covers common S3 bucket policies that lead to unauthorized read/write permissions, role assumption vectors, and how to configure IAM policies properly using AWS CLI and Terraform.",
-    link: "https://medium.com/@yourprofile/aws-s3-security",
-  },
-  {
-    id: "3",
-    title: "Bypassing Web Application Firewalls (WAF) via HTTP Parameter Pollution",
-    date: "June 10, 2026",
-    author: "Liam Hadap",
-    snippet: "Exploring parameter parsing quirks in modern web backend framework routers to bypass regex-based WAF signatures.",
-    description: "This writeup explores how different web servers parse duplicate HTTP GET/POST parameters, and how attackers can structure payloads to confuse security proxies while hitting backend endpoints successfully.",
-    link: "https://medium.com/@yourprofile/waf-bypass-hpp",
-  },
-  {
-    id: "4",
-    title: "Linux Privilege Escalation: Exploiting SUID Binaries and Capabilities",
-    date: "May 19, 2026",
-    author: "Liam Hadap",
-    snippet: "Practical methodology for identifying misconfigured SUID flags, GTFOBins exploitation, and elevated POSIX Linux capabilities.",
-    description: "A hands-on guide detailing Linux post-exploitation. Covers searching for custom binaries with SUID bits set, abusing wildcard expansions in cron jobs, and escalating privileges via assigned capabilities like cap_setuid.",
-    link: "https://medium.com/@yourprofile/linux-privesc-suid",
+    label: "",
+    items: [
+      { 
+        title: "Certified in Cybersecurity (CC)", 
+        issuer: "ISC2", 
+        logo: "/logos/isc2-cc.png",
+        iconBg: "bg-blue-50",
+        link: "https://www.credly.com/badges/96312ce2-7b79-4470-a4f2-a6911f73b635/public_url"
+      },
+      { 
+        title: "IT Fundamentals (ITF+)", 
+        issuer: "CompTIA", 
+        logo: "/logos/comptia-logo.jpeg",
+        iconBg: "bg-red-50",
+        link: "" //tbd
+      },
+      { 
+        title: "Azure Fundamentals\n(AZ-900) [In-progress]", //az
+        issuer: "Microsoft", 
+        logo: "/logos/microsoft-logo.png",
+        iconBg: "bg-orange-50",
+        link: ""
+      },
+      { 
+        title: "Certified Cloud Practitioner\n [In-progress]", //aws
+        issuer: "Amazon Web Services", 
+        logo: "/logos/aws-logo.png",
+        iconBg: "bg-slate-50",
+        link: ""
+      },
+      { 
+        title: "Cloud Infrastructure 2025 Certified Foundations Associate", 
+        issuer: "Oracle", 
+        logo: "/logos/oracle_logo.jpeg",
+        iconBg: "bg-orange-50",
+        link: "" //gdrive of cert
+      },
+      { 
+        title: "CCNA: Introduction to Networks", //cisco 1
+        issuer: "Cisco", 
+        logo: "/logos/cisco1-logo.png",
+        iconBg: "bg-purple-50",
+        link: "https://www.credly.com/badges/3e533e16-29ae-497f-b08f-cb33b52b3664/public_url"
+      },
+      { 
+        title: "CCNA: Switching, Routing & Wireless Essentials", //cisco 2
+        issuer: "Cisco", 
+        logo: "/logos/cisco2-logo.png",
+        iconBg: "bg-purple-50",
+        link: ""
+      },
+      { 
+        title: "CCNA: Enterprise Networking, Security, and Automation", //cisco 3
+        issuer: "Cisco", 
+        logo: "/logos/cisco3-logo.png",
+        iconBg: "bg-purple-50",
+        link: "https://www.credly.com/badges/2ba36630-7147-4cf3-8ce7-8cada663f003/public_url"
+      },
+    ],
   },
 ];
 
-type Blog = typeof BLOGS_DATA[0];
+const ROTATIONS = [-2, 1.5, -1, 2.5, -3, 2, -1.5, 3, -2.5, 1, -2, 2];
+const INITIAL_VISIBLE = 4;
+const LOAD_STEP = 4;
+const MAX_LOADS = 4;
 
-export default function Blogs() {
-  const [selectedBlog, setSelectedBlog] = useState<Blog | null>(null);
-  const [visibleCount, setVisibleCount] = useState(2);
-
-  // Disables background scrolling when the modal is open
-  useEffect(() => {
-    if (selectedBlog) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
-    }
-    return () => {
-      document.body.style.overflow = "unset";
-    };
-  }, [selectedBlog]);
-
-  const handleLoadMore = () => {
-    setVisibleCount((prev) => prev + 2);
-  };
+function CertCard({ cert, index }: { cert: Cert; index: number }) {
+  const rotation = ROTATIONS[index % ROTATIONS.length];
 
   return (
-    <section id="blogs" className="px-6 sm:px-12 md:px-16 py-12 md:py-14 border-b border-line w-full max-w-[1100px]">
-      <span className="block font-mono text-accent text-xs tracking-widest mb-3">
-        05 — Writeups
-      </span>
-      <h2 className="font-display font-semibold text-3xl sm:text-4xl md:text-[clamp(28px,3vw,40px)] text-ink mb-10">
-        Blogs & Writeups
-      </h2>
-
-      {/* Responsive Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {BLOGS_DATA.slice(0, visibleCount).map((blog) => (
-          <div 
-            key={blog.id} 
-            className="group cursor-pointer flex flex-col justify-between p-6 rounded-xl border border-line bg-paper hover:border-accent hover:shadow-md transition-all duration-300"
-            onClick={() => setSelectedBlog(blog)}
-          >
-            <div>
-              {/* Title & Top Right External Link */}
-              <div className="flex items-start justify-between gap-3 mb-3">
-                <h4 className="font-display font-semibold text-lg text-ink group-hover:text-accent transition-colors leading-snug">
-                  {blog.title}
-                </h4>
-                <a
-                  href={blog.link.startsWith("http") ? blog.link : `https://${blog.link}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={(e) => e.stopPropagation()}
-                  aria-label="External link"
-                  className="p-1.5 rounded-md border border-line text-inkSoft hover:text-accent hover:border-accent hover:bg-accentSoft transition-all shrink-0"
-                >
-                  <svg className="w-4 h-4 transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M7 17L17 7M17 7H7M17 7V17" />
-                  </svg>
-                </a>
-              </div>
-
-              {/* Snippet */}
-              <p className="text-sm text-inkSoft leading-relaxed line-clamp-3 mb-4">
-                {blog.snippet}
-              </p>
-            </div>
-
-            <div>
-              {/* Separator Line */}
-              <div className="w-full border-b border-line my-4" />
-
-              {/* Author & Date Footer */}
-              <div className="flex items-center justify-between text-xs font-mono text-inkSoft tracking-wide">
-                <span>Written by <strong className="text-ink font-medium">{blog.author}</strong></span>
-                <span>{blog.date}</span>
-              </div>
-            </div>
-          </div>
-        ))}
+    <div
+      className="group relative bg-white rounded-xl border border-line px-5 py-6 transition-all duration-300 ease-out hover:z-10 hover:scale-105 sm:hover:scale-110 hover:rotate-0 hover:border-accent hover:bg-accentSoft"
+      style={{
+        transform: `rotate(${rotation}deg)`,
+        boxShadow: "0 10px 20px -10px rgba(24,27,23,0.12)",
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.boxShadow = "0 0 0 1px rgba(47,93,80,0.3), 0 20px 40px -12px rgba(47,93,80,0.35)";
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.boxShadow = "0 10px 20px -10px rgba(24,27,23,0.12)";
+      }}
+    >
+      <div className={`w-10 h-10 rounded-lg ${cert.iconBg} flex items-center justify-center mb-4 overflow-hidden`}>
+        <img 
+          src={cert.logo} 
+          alt={`${cert.issuer} logo`} 
+          className="w-full h-full object-cover"
+        />
       </div>
 
-      {/* Load More Button matching Certifications section styling */}
-      {visibleCount < BLOGS_DATA.length && (
-        <div className="flex justify-center mt-10">
-          <button
-            onClick={handleLoadMore}
-            className="font-mono text-xs tracking-widest text-inkSoft uppercase border border-line rounded-full px-5 py-2.5 hover:border-accent hover:text-accent transition-colors cursor-pointer"
-          >
-            Load 2 more
-          </button>
-        </div>
-      )}
+      <h3 className="text-ink font-display font-semibold text-sm leading-snug mb-1 whitespace-pre-line">
+        {cert.title}
+      </h3>
+      <span className="block font-mono text-[10px] tracking-widest text-inkSoft uppercase mb-6">
+        {cert.issuer}
+      </span>
 
-      {/* Text-Focused Modal */}
-      {selectedBlog && (
-        <div 
-          className="fixed inset-0 z-[100] bg-ink/80 backdrop-blur-md flex items-center justify-center p-4 sm:p-6 animate-in fade-in duration-300"
-          onClick={() => setSelectedBlog(null)}
+      <a
+        href={cert.link}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="font-mono text-[10px] tracking-widest text-inkSoft uppercase group-hover:text-accent transition-colors inline-block cursor-pointer"
+      >
+        ‹ VERIFY ›
+      </a>
+    </div>
+  );
+}
+
+function CategorySection({ category }: { category: CertCategory }) {
+  const [loadsUsed, setLoadsUsed] = useState(0);
+  const visibleCount = Math.min(INITIAL_VISIBLE + loadsUsed * LOAD_STEP, category.items.length);
+  const visible = category.items.slice(0, visibleCount);
+  const canLoadMore = loadsUsed < MAX_LOADS && visibleCount < category.items.length;
+
+  return (
+    <div className="mb-14">
+      {category.label && (
+        <span className="block font-mono text-xs tracking-widest text-inkSoft uppercase mb-6">
+          {category.label}
+        </span>
+      )}
+      {/* 1 column on mobile, 2 on tablet, 4 on desktop */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-4 lg:gap-1.5">
+        {visible.map((cert, i) => (
+          <CertCard key={i} cert={cert} index={i} />
+        ))}
+      </div>
+      {canLoadMore && (
+        <button
+          onClick={() => setLoadsUsed((n) => n + 1)}
+          className="mt-10 font-mono text-xs tracking-widest text-inkSoft uppercase border border-line rounded-full px-5 py-2.5 hover:border-accent hover:text-accent transition-colors cursor-pointer"
         >
-          <div 
-            className="bg-white rounded-2xl w-full max-w-2xl max-h-[85vh] p-6 sm:p-8 md:p-10 flex flex-col overflow-y-auto shadow-2xl relative animate-in zoom-in-95 duration-300"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Close Button */}
-            <button 
-              onClick={() => setSelectedBlog(null)}
-              className="absolute top-4 right-4 z-20 w-9 h-9 bg-line/20 border border-line rounded-full flex items-center justify-center text-inkSoft hover:text-ink hover:bg-line/40 transition-all cursor-pointer text-lg"
-              aria-label="Close modal"
-            >
-              ×
-            </button>
-
-            <p className="font-mono text-xs tracking-widest text-inkSoft mb-3 uppercase">
-              {selectedBlog.date} — Written by {selectedBlog.author}
-            </p>
-            
-            <div className="flex items-start justify-between gap-4 mb-6 pr-8">
-              <h3 className="font-display text-2xl sm:text-3xl font-semibold text-ink leading-tight">
-                {selectedBlog.title}
-              </h3>
-              <a 
-                href={selectedBlog.link.startsWith("http") ? selectedBlog.link : `https://${selectedBlog.link}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-accent hover:text-ink transition-colors p-1 shrink-0"
-                aria-label="Visit full writeup"
-                title="Visit full writeup"
-              >
-                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                </svg>
-              </a>
-            </div>
-
-            <div className="w-full border-b border-line mb-6" />
-
-            <p className="text-sm sm:text-base text-inkSoft leading-relaxed whitespace-pre-line">
-              {selectedBlog.description}
-            </p>
-
-            <div className="mt-8 pt-6 border-t border-line flex justify-end">
-              <a 
-                href={selectedBlog.link.startsWith("http") ? selectedBlog.link : `https://${selectedBlog.link}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-mono text-xs uppercase tracking-widest bg-accent text-white px-6 py-3 rounded-lg hover:opacity-90 transition-opacity"
-              >
-                Read Full Article →
-              </a>
-            </div>
-          </div>
-        </div>
+          Load 4 more
+        </button>
       )}
+    </div>
+  );
+}
+
+export default function Certifications() {
+  return (
+    <section id="certifications" className="min-h-[70vh] px-6 sm:px-12 md:px-16 py-12 md:py-24 border-b border-line w-full max-w-[1100px]">
+      <span className="block font-mono text-accent text-xs tracking-widest uppercase mb-3">02 — Certifications</span>
+      <h2 className="font-display font-semibold text-3xl sm:text-4xl md:text-[clamp(28px,3vw,40px)] text-ink mb-10">Certifications</h2>
+
+      {categories.map((category, index) => (
+        <CategorySection key={index} category={category} />
+      ))}
     </section>
   );
 }
