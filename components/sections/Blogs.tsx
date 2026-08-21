@@ -129,14 +129,14 @@ export default function Blogs() {
         ))}
       </div>
 
-      {/* Load More Button */}
+      {/* Load More Button copied directly from Certifications */}
       {visibleCount < BLOGS_DATA.length && (
-        <div className="flex justify-center mt-12">
+        <div className="flex justify-center mt-10">
           <button
             onClick={handleLoadMore}
-            className="font-mono text-xs tracking-widest uppercase px-8 py-3.5 rounded-lg border border-line text-ink bg-white hover:border-accent hover:text-accent hover:shadow-sm transition-all duration-200 cursor-pointer"
+            className="font-mono text-xs tracking-widest text-inkSoft uppercase border border-line rounded-full px-5 py-2.5 hover:border-accent hover:text-accent transition-colors cursor-pointer"
           >
-            Load More ({BLOGS_DATA.length - visibleCount} remaining)
+            Load 2 more
           </button>
         </div>
       )}
