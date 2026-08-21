@@ -27,7 +27,7 @@ const BLOGS_DATA = [
     date: "June 10, 2026",
     author: "Liam Hadap",
     snippet: "Exploring parameter parsing quirks in modern web backend framework routers to bypass regex-based WAF signatures.",
-    description: "This writeup explores how different web servers parse duplicate HTTP GET/POST parameters, and how attackers can structure payloads to confuse security proxies while hitting backend endpoints successfully.",
+    description: "This writeup explores how different web servers (Express, Flask, ASP.NET) parse duplicate HTTP GET/POST parameters, and how attackers can structure payloads to confuse security proxies while hitting backend endpoints successfully.",
     link: "https://medium.com/@yourprofile/waf-bypass-hpp",
   },
   {
@@ -38,6 +38,15 @@ const BLOGS_DATA = [
     snippet: "Practical methodology for identifying misconfigured SUID flags, GTFOBins exploitation, and elevated POSIX Linux capabilities.",
     description: "A hands-on guide detailing Linux post-exploitation. Covers searching for custom binaries with SUID bits set, abusing wildcard expansions in cron jobs, and escalating privileges via assigned capabilities like cap_setuid.",
     link: "https://medium.com/@yourprofile/linux-privesc-suid",
+  },
+  {
+    id: "5",
+    title: "Building Secure CI/CD Pipelines with GitHub Actions & OpenID Connect",
+    date: "April 02, 2026",
+    author: "Liam Hadap",
+    snippet: "Eliminating hardcoded cloud credentials in build runners using short-lived OIDC tokens for AWS and GCP deployments.",
+    description: "A walkthrough on hardening CI/CD workflows. Learn how to configure cloud IAM trust policies to authenticate GitHub Actions jobs directly with cloud providers without storing long-lived access keys in repository secrets.",
+    link: "https://medium.com/@yourprofile/secure-cicd-oidc",
   },
 ];
 
@@ -120,14 +129,14 @@ export default function Blogs() {
         ))}
       </div>
 
-      {/* Load More Button matching Certifications section styling */}
+      {/* Load More Button */}
       {visibleCount < BLOGS_DATA.length && (
-        <div className="flex justify-center mt-10">
+        <div className="flex justify-center mt-12">
           <button
             onClick={handleLoadMore}
-            className="font-mono text-xs tracking-widest text-inkSoft uppercase border border-line rounded-full px-5 py-2.5 hover:border-accent hover:text-accent transition-colors cursor-pointer"
+            className="font-mono text-xs tracking-widest uppercase px-8 py-3.5 rounded-lg border border-line text-ink bg-white hover:border-accent hover:text-accent hover:shadow-sm transition-all duration-200 cursor-pointer"
           >
-            Load 2 more
+            Load More ({BLOGS_DATA.length - visibleCount} remaining)
           </button>
         </div>
       )}

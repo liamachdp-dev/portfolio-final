@@ -14,7 +14,7 @@ export default async function Recommendations() {
 
   return (
     <section id="recommendations" className="px-6 sm:px-12 md:px-16 py-12 md:py-24 w-full max-w-[1100px]">
-      <span className="block font-mono text-accent text-xs tracking-widest uppercase mb-3">05 — Recommendations</span>
+      <span className="block font-mono text-accent text-xs tracking-widest  mb-3">06 — Recommendations</span>
       <h2 className="font-display font-semibold text-3xl sm:text-4xl md:text-[clamp(28px,3vw,40px)] text-ink mb-10">What people say</h2>
 
       <div className="flex flex-col md:flex-row gap-8 md:gap-10 items-stretch">

@@ -7,7 +7,8 @@ const links = [
   { href: "#certifications", label: "Certifications", num: "02" },
   { href: "#projects", label: "Projects", num: "03" },
   { href: "#skills", label: "Skills", num: "04" },
-  { href: "#recommendations", label: "Recommendations", num: "05" },
+  { href: "#blogs", label: "Blogs", num: "05" },
+  { href: "#recommendations", label: "Recommendations", num: "06" },
 ];
 
 export default function Sidebar() {
@@ -53,7 +54,7 @@ export default function Sidebar() {
         )}
       </button>
 
-      {/* Mobile Backdrop (Click outside to collapse) */}
+      {/* Mobile Backdrop */}
       {isOpen && (
         <div
           className="md:hidden fixed inset-0 bg-black/40 z-40 backdrop-blur-xs transition-opacity"
@@ -65,21 +66,18 @@ export default function Sidebar() {
       <aside
         className={`
           font-mono flex flex-col bg-paper border-r border-line
-          /* Mobile View: Slide-over Drawer */
           fixed top-0 bottom-0 left-0 z-50 w-[260px] px-6 py-8 transition-transform duration-300 ease-in-out shadow-2xl
           ${isOpen ? "translate-x-0" : "-translate-x-full"}
-          /* Desktop View: Sticky Sidebar */
           md:sticky md:top-0 md:h-screen md:w-[220px] md:flex-shrink-0 md:self-start md:translate-x-0 md:px-7 md:py-12 md:shadow-none md:z-auto
         `}
       >
-        {/* Top Header & Links */}
+        {/* Header & Links */}
         <div className="flex flex-col gap-9">
           <div className="flex items-center justify-between">
             <div className="font-display font-semibold text-[15px] text-ink">
               [liam-hdp]
               <span className="block text-[11px] text-inkSoft font-medium mt-0.5">Portfolio</span>
             </div>
-            {/* Mobile Close Button inside Drawer */}
             <button
               onClick={() => setIsOpen(false)}
               aria-label="Close menu"
@@ -109,7 +107,15 @@ export default function Sidebar() {
         </div>
 
         {/* Pinned Bottom Group */}
-        <div className="mt-auto pt-6 flex flex-col gap-4">
+        <div className="mt-auto pt-6 flex flex-col gap-3">
+          <div className="flex flex-col items-center w-full gap-1">
+            <div className="text-[11px] font-medium text-inkSoft/80 tracking-wider flex items-center gap-1 lowercase">
+              <span>contact me!</span>
+              <span className="animate-pulse">↓</span>
+            </div>
+            <div className="w-full border-b border-line/80 my-0.5" />
+          </div>
+
           <div className="flex items-center justify-center gap-3 w-full">
             <a
               href="https://linkedin.com/in/yourprofile"
