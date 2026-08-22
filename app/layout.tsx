@@ -3,8 +3,11 @@ import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "[Your Name] — Portfolio",
+  title: "[liam-hdp] — Portfolio",
   description: "NetSec & Cybersecurity Student — projects, certs, and writing.",
+  icons: {
+    icon: "/custom-icon.png", // The exact name of your new file
+  },
 };
 
 export default function RootLayout({
