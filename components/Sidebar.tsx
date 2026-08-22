@@ -115,7 +115,8 @@ export default function Sidebar() {
     if (gameState === "menu" || gameState === "gameover") {
       resetGame();
     } else if (gameState === "playing") {
-      gameData.current.velocity = -7.5; // Snappy jump
+      // Toned down jump height for better mobile control (was -7.5)
+      gameData.current.velocity = -5.5; 
     }
   }, [gameState, resetGame]);
 
@@ -140,11 +141,11 @@ export default function Sidebar() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    // Hard difficulty configuration
-    const GRAVITY = 0.45;
-    const PIPE_SPEED = 3.5;
+    // Mobile-optimized difficulty configuration
+    const GRAVITY = 0.25;         // Slower fall (was 0.45)
+    const PIPE_SPEED = 2.5;       // Slower pipes to give more reaction time (was 3.5)
     const PIPE_WIDTH = 40;
-    const PIPE_SPAWN_RATE = 90;
+    const PIPE_SPAWN_RATE = 120;  // Spaced out pipes to match slower speed (was 90)
     const GAP_SIZE = 110;
     const BIRD_SIZE = 16;
     const BIRD_X_POS = canvas.width / 3;
@@ -382,24 +383,31 @@ export default function Sidebar() {
                 
                 {/* Canvas Container */}
                 <div 
-                  className="relative w-full h-[300px] border-2 border-ink bg-white cursor-pointer overflow-hidden rounded-md"
-                  onClick={handleJump}
+                  className="relative w-full h-[300px] border-2 border-ink bg-white cursor-pointer overflow-hidden rounded-md touch-none"
+                  onPointerDown={(e) => {
+                    e.preventDefault(); // Prevents touch scrolling/zooming
+                    handleJump();
+                  }}
                 >
                   <canvas ref={canvasRef} width={400} height={300} className="w-full h-full block" />
 
                   {/* Overlays */}
                   {gameState === "menu" && (
-                    <div className="absolute inset-0 flex items-center justify-center bg-white/80 font-mono text-sm uppercase tracking-widest font-bold">
+                    <div className="absolute inset-0 flex items-center justify-center bg-white/80 font-mono text-sm uppercase tracking-widest font-bold pointer-events-none">
                       Tap or Space to Start
                     </div>
                   )}
                   {gameState === "gameover" && (
-                    <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/90 font-mono">
+                    <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/90 font-mono pointer-events-none">
                       <span className="text-lg font-bold mb-2">Game Over!</span>
                       <span className="text-sm text-inkSoft mb-4">Final Score: {score}</span>
                       <button 
-                        onClick={resetGame}
-                        className="border-2 border-ink px-4 py-2 hover:bg-ink hover:text-white transition-colors uppercase text-xs font-bold cursor-pointer"
+                        onPointerDown={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          resetGame();
+                        }}
+                        className="border-2 border-ink px-4 py-2 hover:bg-ink hover:text-white transition-colors uppercase text-xs font-bold cursor-pointer pointer-events-auto"
                       >
                         Play Again
                       </button>
