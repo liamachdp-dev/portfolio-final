@@ -60,21 +60,59 @@ export default function Sidebar() {
     fetchLeaderboard();
   }, [showGameModal, supabase]);
 
-  // --- Supabase: Save Score ---
+  // --- Supabase: Save Score (Updated Logic) ---
   const handleGameOver = async (finalScore: number) => {
     setGameState("gameover");
     if (finalScore === 0) return;
 
-    // Optimistic UI update so the player sees their score immediately
-    setLeaderboard((prev) => {
-      const newLb = [...prev, { name: playerName, score: finalScore }];
-      return newLb.sort((a, b) => b.score - a.score).slice(0, 3);
-    });
+    // 1. Fetch any existing scores under this player's name
+    const { data: existingRecords } = await supabase
+      .from("flappy_scores")
+      .select("id, score")
+      .eq("name", playerName)
+      .order("score", { ascending: false });
 
-    // Send to database
-    await supabase.from("flappy_scores").insert([
-      { name: playerName, score: finalScore }
-    ]);
+    let shouldRefreshLeaderboard = false;
+
+    if (existingRecords && existingRecords.length > 0) {
+      const bestRecord = existingRecords[0];
+      
+      // 2. Update the record ONLY if the new score is strictly higher
+      if (finalScore > bestRecord.score) {
+        await supabase
+          .from("flappy_scores")
+          .update({ score: finalScore })
+          .eq("id", bestRecord.id);
+        
+        shouldRefreshLeaderboard = true;
+      }
+
+      // 3. Clean up any historical duplicates for this name (housekeeping)
+      const duplicateIds = existingRecords.slice(1).map((r) => r.id);
+      if (duplicateIds.length > 0) {
+        await supabase.from("flappy_scores").delete().in("id", duplicateIds);
+        shouldRefreshLeaderboard = true;
+      }
+    } else {
+      // 4. If the player doesn't exist yet, insert a brand new row
+      await supabase.from("flappy_scores").insert([
+        { name: playerName, score: finalScore }
+      ]);
+      shouldRefreshLeaderboard = true;
+    }
+
+    // 5. Re-fetch the leaderboard if changes were made to sync the UI
+    if (shouldRefreshLeaderboard) {
+      const { data: newLeaderboard } = await supabase
+        .from("flappy_scores")
+        .select("name, score")
+        .order("score", { ascending: false })
+        .limit(3);
+
+      if (newLeaderboard) {
+        setLeaderboard(newLeaderboard);
+      }
+    }
   };
 
   // --- Navigation Intersection Observer ---
