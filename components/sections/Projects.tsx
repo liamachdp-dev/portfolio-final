@@ -43,8 +43,8 @@ export default function Projects() {
 
   return (
     <section id="projects" className="px-6 sm:px-12 md:px-16 py-12 md:py-14 border-b border-line w-full max-w-[1100px]">
-      <span className="block font-mono text-accent text-xs tracking-widest uppercase mb-3">
-        03 — Portfolio
+      <span className="block font-mono text-accent text-xs tracking-widest  mb-3">
+        03 — Projects
       </span>
       <h2 className="font-display font-semibold text-3xl sm:text-4xl md:text-[clamp(28px,3vw,40px)] text-ink mb-10">
         Projects

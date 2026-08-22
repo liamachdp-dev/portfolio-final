@@ -162,7 +162,7 @@ function CategorySection({ category }: { category: CertCategory }) {
 export default function Certifications() {
   return (
     <section id="certifications" className="min-h-[70vh] px-6 sm:px-12 md:px-16 py-12 md:py-24 border-b border-line w-full max-w-[1100px]">
-      <span className="block font-mono text-accent text-xs tracking-widest uppercase mb-3">02 — Certifications</span>
+      <span className="block font-mono text-accent text-xs tracking-widest  mb-3">02 — Certifications</span>
       <h2 className="font-display font-semibold text-3xl sm:text-4xl md:text-[clamp(28px,3vw,40px)] text-ink mb-10">Certifications</h2>
 
       {categories.map((category, index) => (
