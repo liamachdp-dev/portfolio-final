@@ -8,6 +8,7 @@ interface Cert {
   logo: string; // Path to logo in /public/logos/
   iconBg: string;
   link: string; // Direct verification link
+  isWide?: boolean; // Added to handle rectangular logos
 }
 
 interface CertCategory {
@@ -46,6 +47,14 @@ const categories: CertCategory[] = [
         logo: "/logos/aws-logo.png",
         iconBg: "bg-slate-50",
         link: ""
+      },
+      { 
+        title: "PhilNITS Information Technology Passport (IP)\n [In-progress]", //aws
+        issuer: "PhilNITS", 
+        logo: "/logos/philnits-logo.png",
+        iconBg: "bg-slate-50",
+        link: "",
+        isWide: true // Set to true to make the box rectangular
       },
       { 
         title: "Cloud Infrastructure 2025 Certified Foundations Associate", 
@@ -101,11 +110,12 @@ function CertCard({ cert, index }: { cert: Cert; index: number }) {
         e.currentTarget.style.boxShadow = "0 10px 20px -10px rgba(24,27,23,0.12)";
       }}
     >
-      <div className={`w-10 h-10 rounded-lg ${cert.iconBg} flex items-center justify-center mb-4 overflow-hidden`}>
+      {/* Updated width class and object-fit class based on isWide property */}
+      <div className={`h-10 ${cert.isWide ? 'w-24 px-1' : 'w-10'} rounded-lg ${cert.iconBg} flex items-center justify-center mb-4 overflow-hidden`}>
         <img 
           src={cert.logo} 
           alt={`${cert.issuer} logo`} 
-          className="w-full h-full object-cover"
+          className={`w-full h-full ${cert.isWide ? 'object-contain' : 'object-cover'}`}
         />
       </div>
 
@@ -141,7 +151,6 @@ function CategorySection({ category }: { category: CertCategory }) {
           {category.label}
         </span>
       )}
-      {/* 1 column on mobile, 2 on tablet, 4 on desktop */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-4 lg:gap-1.5">
         {visible.map((cert, i) => (
           <CertCard key={i} cert={cert} index={i} />
@@ -152,7 +161,7 @@ function CategorySection({ category }: { category: CertCategory }) {
           onClick={() => setLoadsUsed((n) => n + 1)}
           className="mt-10 font-mono text-xs tracking-widest text-inkSoft uppercase border border-line rounded-full px-5 py-2.5 hover:border-accent hover:text-accent transition-colors cursor-pointer"
         >
-          Load 4 more
+          Load more
         </button>
       )}
     </div>
