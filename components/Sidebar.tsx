@@ -38,7 +38,6 @@ export default function Sidebar() {
     velocity: 0,
     pipes: [] as PipeData[],
     score: 0,
-    frames: 0,
   });
 
   // --- Supabase: Fetch Leaderboard (Deduplicated) ---
@@ -50,21 +49,20 @@ export default function Sidebar() {
         .from("flappy_scores")
         .select("name, score")
         .order("score", { ascending: false })
-        .limit(50); // Fetch a chunk to ensure we find unique names
+        .limit(50);
 
       if (!error && data) {
-        // Filter to only keep the highest score for each unique name
         const uniqueScores: LeaderboardEntry[] = [];
         const seenNames = new Set<string>();
-        
+
         for (const entry of data) {
           if (!seenNames.has(entry.name)) {
             seenNames.add(entry.name);
             uniqueScores.push(entry);
-            if (uniqueScores.length === 3) break; // Stop once we have top 3 unique
+            if (uniqueScores.length === 3) break;
           }
         }
-        
+
         setLeaderboard(uniqueScores);
       }
     };
@@ -77,26 +75,22 @@ export default function Sidebar() {
     setGameState("gameover");
     if (finalScore === 0) return;
 
-    // 1. Optimistic UI update with deduplication
     setLeaderboard((prev) => {
       const combined = [...prev, { name: playerName, score: finalScore }];
-      
-      // Group by name to keep only the highest score per person
+
       const maxScores: Record<string, number> = {};
       combined.forEach((entry) => {
         if (!maxScores[entry.name] || entry.score > maxScores[entry.name]) {
           maxScores[entry.name] = entry.score;
         }
       });
-      
-      // Convert back to array, sort, take top 3
+
       return Object.entries(maxScores)
         .map(([name, score]) => ({ name, score: Number(score) }))
         .sort((a, b) => b.score - a.score)
         .slice(0, 3);
     });
 
-    // 2. Database Update Logic (Prevent Duplicates)
     const { data: existingRecords } = await supabase
       .from("flappy_scores")
       .select("id, score")
@@ -105,8 +99,7 @@ export default function Sidebar() {
 
     if (existingRecords && existingRecords.length > 0) {
       const bestRecord = existingRecords[0];
-      
-      // Update DB only if new score is higher
+
       if (finalScore > bestRecord.score) {
         await supabase
           .from("flappy_scores")
@@ -114,13 +107,11 @@ export default function Sidebar() {
           .eq("id", bestRecord.id);
       }
 
-      // Clean up any historical duplicates for this name in the DB
       const duplicateIds = existingRecords.slice(1).map((r) => r.id);
       if (duplicateIds.length > 0) {
         await supabase.from("flappy_scores").delete().in("id", duplicateIds);
       }
     } else {
-      // First time player
       await supabase.from("flappy_scores").insert([
         { name: playerName, score: finalScore }
       ]);
@@ -148,14 +139,13 @@ export default function Sidebar() {
     return () => observer.disconnect();
   }, []);
 
-  // --- Game Loop Logic ---
+  // --- Game Controls ---
   const resetGame = useCallback(() => {
     gameData.current = {
       birdY: 150,
       velocity: 0,
       pipes: [],
       score: 0,
-      frames: 0,
     };
     setScore(0);
     setGameState("playing");
@@ -165,7 +155,6 @@ export default function Sidebar() {
     if (gameState === "menu" || gameState === "gameover") {
       resetGame();
     } else if (gameState === "playing") {
-      // Toned down jump height for better mobile control (was -7.5)
       gameData.current.velocity = -5.5;
     }
   }, [gameState, resetGame]);
@@ -183,6 +172,7 @@ export default function Sidebar() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [showGameModal, hasJoined, handleJump]);
 
+  // --- Frame-Rate Independent Delta Time Game Loop ---
   useEffect(() => {
     if (!showGameModal || !hasJoined || gameState !== "playing") return;
 
@@ -191,22 +181,31 @@ export default function Sidebar() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    // Mobile-optimized difficulty configuration
-    const GRAVITY = 0.25; // Slower fall (was 0.45)
-    const PIPE_SPEED = 2.5; // Slower pipes to give more reaction time (was 3.5)
+    const GRAVITY = 0.25;
+    const PIPE_SPEED = 2.5;
     const PIPE_WIDTH = 40;
-    const PIPE_SPAWN_RATE = 120; // Spaced out pipes to match slower speed (was 90)
+    const PIPE_SPAWN_INTERVAL = 1800; // Time in milliseconds between pipe spawns
     const GAP_SIZE = 110;
     const BIRD_SIZE = 16;
     const BIRD_X_POS = canvas.width / 3;
 
-    const update = () => {
+    let lastTime = performance.now();
+    let lastPipeSpawn = performance.now();
+
+    const update = (time: number) => {
+      // Calculate Delta Time ratio normalized to a standard 60 FPS (~16.67ms tick)
+      const deltaTime = (time - lastTime) / (1000 / 60);
+      lastTime = time;
+
+      // Clamp Delta Time to prevent clipping or huge jumps during tab switching
+      const dt = Math.min(Math.max(deltaTime, 0), 2);
       const data = gameData.current;
 
-      data.velocity += GRAVITY;
-      data.birdY += data.velocity;
+      data.velocity += GRAVITY * dt;
+      data.birdY += data.velocity * dt;
 
-      if (data.frames % PIPE_SPAWN_RATE === 0) {
+      // Spawn pipes using absolute timestamp delta instead of frame counts
+      if (time - lastPipeSpawn > PIPE_SPAWN_INTERVAL) {
         const minPipeHeight = 40;
         const maxPipeHeight = canvas.height - GAP_SIZE - minPipeHeight;
         const topHeight = Math.floor(Math.random() * (maxPipeHeight - minPipeHeight + 1) + minPipeHeight);
@@ -217,13 +216,13 @@ export default function Sidebar() {
           bottomY: topHeight + GAP_SIZE,
           passed: false
         });
+        lastPipeSpawn = time;
       }
 
       let collision = false;
       data.pipes.forEach((pipe) => {
-        pipe.x -= PIPE_SPEED;
+        pipe.x -= PIPE_SPEED * dt;
 
-        // Score logic: if pipe's right edge passes bird's left edge
         if (!pipe.passed && pipe.x + PIPE_WIDTH < BIRD_X_POS) {
           data.score += 1;
           setScore(data.score);
@@ -247,16 +246,16 @@ export default function Sidebar() {
         collision = true;
       }
 
-      data.pipes = data.pipes.filter(p => p.x + PIPE_WIDTH > 0);
-      data.frames++;
+      data.pipes = data.pipes.filter((p) => p.x + PIPE_WIDTH > 0);
 
+      // Render Canvas
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.strokeStyle = "#1a1a1a";
       ctx.lineWidth = 2;
 
       ctx.strokeRect(BIRD_X_POS, data.birdY, BIRD_SIZE, BIRD_SIZE);
 
-      data.pipes.forEach(pipe => {
+      data.pipes.forEach((pipe) => {
         ctx.strokeRect(pipe.x, 0, PIPE_WIDTH, pipe.topHeight);
         ctx.strokeRect(pipe.x, pipe.bottomY, PIPE_WIDTH, canvas.height - pipe.bottomY);
       });
@@ -273,7 +272,7 @@ export default function Sidebar() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showGameModal, hasJoined, gameState]);
 
-  // Sort real leaderboard data without faking entries
+  // Podium Ranking Calculations
   const podiumData = [...leaderboard].sort((a, b) => b.score - a.score);
   const first = podiumData[0];
   const second = podiumData[1];
@@ -391,7 +390,7 @@ export default function Sidebar() {
           <div className="bg-paper border border-line rounded-2xl w-full max-w-md p-6 sm:p-8 flex flex-col items-center shadow-2xl relative">
             <button
               onClick={() => { setShowGameModal(false); setHasJoined(false); setGameState("menu"); }}
-              className="absolute top-4 right-4 text-inkSoft hover:text-ink text-xl font-bold p-2"
+              className="absolute top-4 right-4 text-inkSoft hover:text-ink text-xl font-bold p-2 cursor-pointer"
             >
               ×
             </button>
@@ -418,7 +417,7 @@ export default function Sidebar() {
                     }
                   }}
                   disabled={!playerName.trim()}
-                  className="w-full bg-ink text-white rounded-lg py-3 text-sm hover:bg-accent disabled:opacity-50 transition-colors uppercase tracking-widest"
+                  className="w-full bg-ink text-white rounded-lg py-3 text-sm hover:bg-accent disabled:opacity-50 transition-colors uppercase tracking-widest cursor-pointer"
                 >
                   Enter Arena
                 </button>
@@ -435,7 +434,7 @@ export default function Sidebar() {
                 <div
                   className="relative w-full h-[300px] border-2 border-ink bg-white cursor-pointer overflow-hidden rounded-md touch-none"
                   onPointerDown={(e) => {
-                    e.preventDefault(); // Prevents touch scrolling/zooming
+                    e.preventDefault();
                     handleJump();
                   }}
                 >
