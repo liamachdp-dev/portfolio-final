@@ -17,6 +17,19 @@ const PROJECTS_DATA = [
       "/pictures/aai-project4.png"
     ]
   },
+  {
+    id: "2",
+    title: "Homelab Project",
+    date: "September 2026 - On Going",
+    description: "This self-hosted Ubuntu server project deploys an automated media acquisition and network-level DNS stack using Docker Compose to eliminate reliance on commercial streaming platforms. The installed software stack includes Jellyfin for media streaming, Sonarr and Radarr for automated content acquisition, Prowlarr for indexer synchronization, qBittorrent for P2P downloads, FlareSolverr to bypass Cloudflare anti-bot protections, and Pi-hole as a local DNS sinkhole that blocks a percentage of ad and telemetry traffic. Managed visually via a CasaOS dashboard and secured with a Tailscale mesh VPN, the setup enables full zero-trust remote administration without exposing router ports to the public internet. Ultimately, this infrastructure automates 100% of media indexing workflows, unifies container storage using persistent bind mounts, yields over ₱23K+ in estimated annual savings, and lays the groundwork for future local Network Attached Storage (NAS) expansion.",
+    link: "",
+    thumbnail: "/pictures/homelab.png",
+    images: [
+      "/pictures/homelab.png",
+      "/pictures/pihole.png",
+      "/pictures/htlagi10.png"
+    ]
+  },
 ];
 
 type Project = typeof PROJECTS_DATA[0];
