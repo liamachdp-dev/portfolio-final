@@ -5,6 +5,14 @@ import { useState } from "react";
 const BLOGS_DATA = [
   {
     id: "1",
+    title: "Personal Portfolio",
+    date: "August 2026",
+    author: "Liam Hadap",
+    snippet: "To stay productive during class suspensions, I built a personal portfolio to refresh my development skills alongside my focus on Network and Security, with plans to update it continuously throughout my journey.",
+    link: "https://www.linkedin.com/posts/liam-hadap-81b66138b_got-bored-during-the-class-suspensions-so-activity-7498225569311088640-5aNB?utm_source=share&utm_medium=member_desktop&rcm=ACoAAGAG6VcBAJKXl6eJfwdgg16OAB7Sa3D5enU",
+  },
+  {
+    id: "2",
     title: "OverTheWire Bandit Games (Level 0 to 10)",
     date: "August 10, 2025",
     author: "Liam Hadap",
@@ -12,7 +20,7 @@ const BLOGS_DATA = [
     link: "https://medium.com/@liamashlie.hadap.cics/hadap-activity-1-linux-challenge-a5aadb290097?sharedUserId=liamashlie.hadap.cics",
   },
   {
-    id: "2",
+    id: "3",
     title: "root@rootme:~#: Can you root me?",
     date: "October 18, 2025",
     author: "Liam Hadap",
@@ -61,7 +69,7 @@ export default function Blogs() {
         05 — Writeups
       </span>
       <h2 className="font-display font-semibold text-3xl sm:text-4xl md:text-[clamp(28px,3vw,40px)] text-ink mb-10">
-        Blogs & Writeups
+        Blogs, Writeups & Posts
       </h2>
 
       {/* Responsive Grid */}
