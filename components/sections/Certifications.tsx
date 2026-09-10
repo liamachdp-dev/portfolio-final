@@ -35,11 +35,11 @@ const categories: CertCategory[] = [
         link: "" //tbd
       },
       { 
-        title: "Azure Fundamentals\n(AZ-900) [In-progress]", //az
+        title: "Azure Fundamentals\n(AZ-900)", //az
         issuer: "Microsoft", 
         logo: "/logos/microsoft-logo.png",
         iconBg: "bg-orange-50",
-        link: ""
+        link: "https://learn.microsoft.com/api/credentials/share/en-us/LiamHadap-5154/C7733668E415AB61?sharingId=E28EFEF6548CCFE9"
       },
       { 
         title: "Certified Cloud Practitioner\n [In-progress]", //aws
