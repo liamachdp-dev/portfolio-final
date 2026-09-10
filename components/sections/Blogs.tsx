@@ -13,6 +13,14 @@ const BLOGS_DATA = [
   },
   {
     id: "2",
+    title: "Home Lab",
+    date: "September 2026",
+    author: "Liam Hadap",
+    snippet: "This containerized Ubuntu server stack leverages Docker, CasaOS, and Tailscale to automate media streaming and network-wide DNS ad-blocking without exposing public router ports.",
+    link: "https://www.linkedin.com/posts/liam-hadap-81b66138b_boredom-again-during-evm-online-week-activity-7503685064283660288-h9ox?utm_source=share&utm_medium=member_desktop&rcm=ACoAAGAG6VcBAJKXl6eJfwdgg16OAB7Sa3D5enU",
+  },
+  {
+    id: "3",
     title: "OverTheWire Bandit Games (Level 0 to 10)",
     date: "August 10, 2025",
     author: "Liam Hadap",
@@ -20,7 +28,7 @@ const BLOGS_DATA = [
     link: "https://medium.com/@liamashlie.hadap.cics/hadap-activity-1-linux-challenge-a5aadb290097?sharedUserId=liamashlie.hadap.cics",
   },
   {
-    id: "3",
+    id: "4",
     title: "root@rootme:~#: Can you root me?",
     date: "October 18, 2025",
     author: "Liam Hadap",
