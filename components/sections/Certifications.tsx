@@ -42,11 +42,11 @@ const categories: CertCategory[] = [
         link: "https://learn.microsoft.com/api/credentials/share/en-us/LiamHadap-5154/C7733668E415AB61?sharingId=E28EFEF6548CCFE9"
       },
       { 
-        title: "Certified Cloud Practitioner\n [In-progress]", //aws
+        title: "Certified Cloud Practitioner", //aws
         issuer: "Amazon Web Services", 
         logo: "/logos/aws-logo.png",
         iconBg: "bg-slate-50",
-        link: ""
+        link: "https://www.credly.com/badges/aa188b95-4c78-4612-a6e0-7f4c437d3dda/public_url"
       },
       { 
         title: "PhilNITS Information Technology Passport (IP)\n [In-progress]", //aws

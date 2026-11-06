@@ -25,7 +25,7 @@ const infoRows: {
   { type: "field", value: "Top 1%" },
   
   { type: "section", text: "-- CERTIFICATIONS --" },
-  { type: "field", value: "ISC2, CompTia, [Pending] Azure, AWS" },
+  { type: "field", value: "ISC2, CompTia, Azure, AWS" },
 
   { type: "section", text: "-- QUOTE --" },
   { type: "field", value: '"He who jumps into the void owes no explanation to those who stand by and watch"' },
